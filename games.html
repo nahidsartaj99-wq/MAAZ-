@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Maaz Gaming Arena</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { 
             --bg: #0f0f1a; --card: #1b1b2f; --text: #fff; 
             --neon-blue: #00D4FF; --neon-red: #FF3131; 
-            --r: #ff3838; --g: #20bf6b; --y: #f7b731; --b: #3867d6; /* Deeper colors */
+            --r: #ff3838; --g: #20bf6b; --y: #f7b731; --b: #3867d6;
             --safe-star: url('data:image/svg+xml;utf8,<svg fill="%23fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
         }
         body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; margin: 0; padding: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; user-select: none; }
@@ -29,17 +30,11 @@
         .ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 300px; margin: 20px auto; }
         .ttt-cell { aspect-ratio: 1; background: #222; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 800; cursor: pointer; box-shadow: inset 3px 3px 10px rgba(0,0,0,0.5); }
         .x { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
-        .o { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); }
-
-        /* LUDO BOARD - FIXED OVERLAP */
+        .o { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); }/* LUDO BOARD - FIXED VISUALS */
         .ludo-wrapper { width: 350px; height: 350px; background: #fff; margin-top: 20px; border: 2px solid #000; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.6); border-radius: 4px; }
         .ludo-grid { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(15, 1fr); background: #eee; }
         
-        .cell { 
-            /* Use box-shadow instead of border to prevent overlap */
-            box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2);
-            position: relative; display: flex; justify-content: center; align-items: center; 
-        }
+        .cell { box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2); position: relative; display: flex; justify-content: center; align-items: center; }
         .base { grid-column: span 6; grid-row: span 6; border: 0.5px solid rgba(0,0,0,0.2); padding: 15px; }
         .base-box { width: 100%; height: 100%; background: #fff; border-radius: 20px; display: grid; grid-template-columns: 1fr 1fr; place-items: center; border: 18px solid transparent; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
         
@@ -51,26 +46,21 @@
         .star { background-image: var(--safe-star); background-size: 70%; background-repeat: no-repeat; background-position: center; opacity: 0.8; }
         .center-box { grid-column: 7 / 10; grid-row: 7 / 10; background: conic-gradient(var(--g) 0deg 90deg, var(--r) 90deg 180deg, var(--b) 180deg 270deg, var(--y) 270deg 360deg); box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2); position: relative; }
         
-        /* NEW 3D PAWNS & STACKING */
+        /* 3D JEWEL PAWNS & STACKING */
         .pawn { 
-            width: 22px; height: 22px; border-radius: 50%; 
-            position: absolute; z-index: 10; 
-            /* 3D Jewel Effect */
+            width: 22px; height: 22px; border-radius: 50%; position: absolute; z-index: 10; 
             box-shadow: 0 4px 5px rgba(0,0,0,0.4), inset 0 -3px 5px rgba(0,0,0,0.3), inset 0 2px 2px rgba(255,255,255,0.5);
             transition: all 0.3s cubic-bezier(0.3, 0.0, 0.2, 1); cursor: pointer; 
         }
-        /* High-gloss gradients */
         .pawn.r { background: radial-gradient(circle at 35% 35%, #fff 5%, #ff8da1 40%, #ef5777 80%, #c44569 100%); }
         .pawn.g { background: radial-gradient(circle at 35% 35%, #fff 5%, #7bed9f 40%, #2ed573 80%, #218c74 100%); }
         .pawn.y { background: radial-gradient(circle at 35% 35%, #fff 5%, #ffeaa7 40%, #fdcb6e 80%, #e58e26 100%); }
         .pawn.b { background: radial-gradient(circle at 35% 35%, #fff 5%, #74b9ff 40%, #0984e3 80%, #0652dd 100%); }
         
-        /* Stacking Offsets */
         .pawn.stack-1 { transform: translate(4px, -4px); z-index: 11; }
-        .pawn.stack-2 { transform: translate(8px, -8px); z-index: 10; }
-        .pawn.stack-3 { transform: translate(12px, -12px); z-index: 9; }
+        .pawn.stack-2 { transform: translate(8px, -8px); z-index: 12; }
+        .pawn.stack-3 { transform: translate(12px, -12px); z-index: 13; }
         
-        /* Bounce Animations */
         .pawn.highlight { animation: bounce 0.7s infinite alternate; box-shadow: 0 0 15px var(--neon-blue), 0 4px 5px rgba(0,0,0,0.4); }
         .pawn.stack-1.highlight { animation: bounce-1 0.7s infinite alternate; }
         .pawn.stack-2.highlight { animation: bounce-2 0.7s infinite alternate; }
@@ -96,13 +86,11 @@
 
 <div id="menu" class="menu-screen active">
     <h1 style="margin-top:40px;">SELECT GAME</h1>
-    
     <div class="game-card" onclick="openSetup('ttt')">
         <div style="font-size:3.5rem;">❌⭕</div>
         <h2>Tic Tac Toe</h2>
         <p style="opacity:0.6">Neon Edition</p>
     </div>
-
     <div class="game-card" onclick="openSetup('ludo')">
         <div style="font-size:3.5rem;">🎲</div>
         <h2>Ludo Royal</h2>
@@ -147,11 +135,9 @@
 
 <div id="game-ludo" class="game-container">
     <div class="ludo-wrapper">
-        <div class="ludo-grid" id="l-board">
-            </div>
+        <div class="ludo-grid" id="l-board"></div>
         <div id="pawn-layer"></div>
     </div>
-    
     <div class="controls">
         <div>
             <div id="l-turn" style="font-weight:900; font-size:1.1rem; color:var(--r); text-transform: uppercase;">RED'S TURN</div>
@@ -163,162 +149,41 @@
         <button onclick="goHome()" style="background:#333; width:auto; padding:10px 25px;">Exit Game</button>
     </div>
 </div><script>
-    // --- NAVIGATION ---
-    function openSetup(game) {
-        document.querySelectorAll('.menu-screen').forEach(el => el.classList.remove('active'));
-        document.getElementById('setup-' + game).classList.add('active');
-    }
-    function goHome() {
-        document.querySelectorAll('.menu-screen, .game-container').forEach(el => el.classList.remove('active'));
-        document.getElementById('menu').classList.add('active');
-    }
+    // --- NAV & GENERAL ---
+    function openSetup(game) { document.querySelectorAll('.menu-screen').forEach(el => el.classList.remove('active')); document.getElementById('setup-' + game).classList.add('active'); }
+    function goHome() { document.querySelectorAll('.menu-screen, .game-container').forEach(el => el.classList.remove('active')); document.getElementById('menu').classList.add('active'); }
 
-    // --- TIC TAC TOE LOGIC ---
-    let tBoard = Array(9).fill(null);
-    let tDiff = 'hard';
-    
-    function startTTT() {
-        tDiff = document.getElementById('ttt-diff').value;
-        document.getElementById('setup-ttt').classList.remove('active');
-        document.getElementById('game-ttt').classList.add('active');
-        resetTTT();
-    }
-
-    function resetTTT() {
-        tBoard.fill(null);
-        renderTTT();
-        document.getElementById('t-status').innerText = "Your Turn (X)";
-    }
-
-    function renderTTT() {
-        const b = document.getElementById('t-board'); b.innerHTML = '';
-        tBoard.forEach((v, i) => {
-            let c = document.createElement('div');
-            c.className = 'ttt-cell ' + (v ? v.toLowerCase() : '');
-            c.innerText = v || '';
-            c.onclick = () => moveTTT(i);
-            b.appendChild(c);
-        });
-    }
-
-    function moveTTT(i) {
-        if (tBoard[i] || checkWinner(tBoard)) return;
-        tBoard[i] = 'X';
-        renderTTT();
-        
-        let win = checkWinner(tBoard);
-        if (win) { endTTT(win); return; }
-        if (!tBoard.includes(null)) { endTTT('draw'); return; }
-
-        document.getElementById('t-status').innerText = "AI Thinking...";
-        setTimeout(() => aiMoveTTT(), 500);
-    }
-
-    function aiMoveTTT() {
-        let move;
-        if (tDiff === 'easy') {
-            let empty = tBoard.map((v, i) => v === null ? i : null).filter(v => v !== null);
-            move = empty[Math.floor(Math.random() * empty.length)];
-        } else if (tDiff === 'med') {
-            move = findBestMove(tBoard, 'O', false); // False means depth 1 (simple)
-        } else {
-            move = findBestMove(tBoard, 'O', true); // Unbeatable
-        }
-        
-        tBoard[move] = 'O';
-        renderTTT();
-        let win = checkWinner(tBoard);
-        if (win) endTTT(win);
-        else document.getElementById('t-status').innerText = "Your Turn (X)";
-    }
-
-    function endTTT(res) {
-        if(res === 'X') document.getElementById('t-status').innerText = "YOU WIN! 🎉";
-        else if(res === 'O') document.getElementById('t-status').innerText = "AI WINS! 🤖";
-        else document.getElementById('t-status').innerText = "DRAW! 🤝";
-    }
-
-    function checkWinner(bd) {
-        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        for (let w of wins) {
-            if (bd[w[0]] && bd[w[0]] === bd[w[1]] && bd[w[0]] === bd[w[2]]) return bd[w[0]];
-        }
-        return null;
-    }
-
-    function findBestMove(bd, player, hard) {
-        let empty = bd.map((v, i) => v === null ? i : null).filter(v => v !== null);
-        // Check immediate win/block
-        for(let i of empty) { bd[i] = player; if(checkWinner(bd) === player) { bd[i]=null; return i; } bd[i] = null; }
-        let opponent = player==='O'?'X':'O';
-        for(let i of empty) { bd[i] = opponent; if(checkWinner(bd) === opponent) { bd[i]=null; return i; } bd[i] = null; }
-        if(!hard) return empty[Math.floor(Math.random() * empty.length)];
-        // Minimax (Hard)
-        let bestScore = -Infinity; let bestMove = empty[0];
-        for (let i of empty) {
-            bd[i] = player; let score = minimax(bd, 0, false); bd[i] = null;
-            if (score > bestScore) { bestScore = score; bestMove = i; }
-        }
-        return bestMove;
-    }
-
-    function minimax(bd, depth, isMax) {
-        let res = checkWinner(bd);
-        if (res === 'O') return 10 - depth; if (res === 'X') return depth - 10; if (!bd.includes(null)) return 0;
-        if (isMax) {
-            let best = -Infinity;
-            for (let i = 0; i < 9; i++) { if (bd[i] === null) { bd[i] = 'O'; best = Math.max(best, minimax(bd, depth + 1, false)); bd[i] = null; } }
-            return best;
-        } else {
-            let best = Infinity;
-            for (let i = 0; i < 9; i++) { if (bd[i] === null) { bd[i] = 'X'; best = Math.min(best, minimax(bd, depth + 1, true)); bd[i] = null; } }
-            return best;
-        }
-    }
-</script><script>
-    // --- LUDO BOARD GENERATION ---
+    // --- TIC TAC TOE ---
+    let tBoard = Array(9).fill(null), tDiff = 'hard';
+    function startTTT() { tDiff = document.getElementById('ttt-diff').value; document.getElementById('setup-ttt').classList.remove('active'); document.getElementById('game-ttt').classList.add('active'); resetTTT(); }
+    function resetTTT() { tBoard.fill(null); renderTTT(); document.getElementById('t-status').innerText = "Your Turn (X)"; }
+    function renderTTT() { const b = document.getElementById('t-board'); b.innerHTML = ''; tBoard.forEach((v, i) => { let c = document.createElement('div'); c.className = 'ttt-cell ' + (v ? v.toLowerCase() : ''); c.innerText = v || ''; c.onclick = () => moveTTT(i); b.appendChild(c); }); }
+    function moveTTT(i) { if (tBoard[i] || checkWinner(tBoard)) return; tBoard[i] = 'X'; renderTTT(); let win = checkWinner(tBoard); if (win) { endTTT(win); return; } if (!tBoard.includes(null)) { endTTT('draw'); return; } document.getElementById('t-status').innerText = "AI Thinking..."; setTimeout(() => aiMoveTTT(), 500); }
+    function aiMoveTTT() { let move; if (tDiff === 'easy') { let e = tBoard.map((v, i) => v === null ? i : null).filter(v => v !== null); move = e[Math.floor(Math.random() * e.length)]; } else if (tDiff === 'med') move = findBestMove(tBoard, 'O', false); else move = findBestMove(tBoard, 'O', true); tBoard[move] = 'O'; renderTTT(); let win = checkWinner(tBoard); if (win) endTTT(win); else document.getElementById('t-status').innerText = "Your Turn (X)"; }
+    function endTTT(res) { document.getElementById('t-status').innerText = res === 'X' ? "YOU WIN! 🎉" : res === 'O' ? "AI WINS! 🤖" : "DRAW! 🤝"; }
+    function checkWinner(bd) { const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; for (let w of wins) if (bd[w[0]] && bd[w[0]] === bd[w[1]] && bd[w[0]] === bd[w[2]]) return bd[w[0]]; return null; }
+    function findBestMove(bd, player, hard) { let empty = bd.map((v, i) => v === null ? i : null).filter(v => v !== null); for(let i of empty) { bd[i] = player; if(checkWinner(bd) === player) { bd[i]=null; return i; } bd[i] = null; } let opponent = player==='O'?'X':'O'; for(let i of empty) { bd[i] = opponent; if(checkWinner(bd) === opponent) { bd[i]=null; return i; } bd[i] = null; } if(!hard) return empty[Math.floor(Math.random() * empty.length)]; let bestScore = -Infinity; let bestMove = empty[0]; for (let i of empty) { bd[i] = player; let score = minimax(bd, 0, false); bd[i] = null; if (score > bestScore) { bestScore = score; bestMove = i; } } return bestMove; }
+    function minimax(bd, depth, isMax) { let res = checkWinner(bd); if (res === 'O') return 10 - depth; if (res === 'X') return depth - 10; if (!bd.includes(null)) return 0; if (isMax) { let best = -Infinity; for (let i = 0; i < 9; i++) { if (bd[i] === null) { bd[i] = 'O'; best = Math.max(best, minimax(bd, depth + 1, false)); bd[i] = null; } } return best; } else { let best = Infinity; for (let i = 0; i < 9; i++) { if (bd[i] === null) { bd[i] = 'X'; best = Math.min(best, minimax(bd, depth + 1, true)); bd[i] = null; } } return best; } }// --- LUDO BOARD & PAWNS ---
     function drawLudoBoard() {
         const b = document.getElementById('l-board'); b.innerHTML = '';
-        // Center
         let center = document.createElement('div'); center.className = 'center-box'; b.appendChild(center);
-        // Bases
-        addBase(b, 1, 1, 'red', 'b-red'); addBase(b, 1, 10, 'grn', 'b-grn');
-        addBase(b, 10, 1, 'blu', 'b-blu'); addBase(b, 10, 10, 'yel', 'b-yel');
-        // Cells
-        for(let r=1; r<=15; r++) {
-            for(let c=1; c<=15; c++) {
-                if((r<=6 && c<=6) || (r<=6 && c>=10) || (r>=10 && c<=6) || (r>=10 && c>=10) || (r>=7 && r<=9 && c>=7 && c<=9)) continue;
-                let cell = document.createElement('div'); cell.className = 'cell';
-                cell.style.gridRow = r; cell.style.gridColumn = c;
-                // Home Paths
-                if(r===8 && c>1 && c<7) cell.classList.add('c-red');
-                if(c===8 && r>1 && r<7) cell.classList.add('c-grn');
-                if(r===8 && c>9 && c<15) cell.classList.add('c-yel');
-                if(c===8 && r>9 && r<15) cell.classList.add('c-blu');
-                // Starts & Stars
-                if(r===7 && c===2) { cell.classList.add('c-red', 'star'); }
-                if(r===2 && c===9) { cell.classList.add('c-grn', 'star'); }
-                if(r===9 && c===14) { cell.classList.add('c-yel', 'star'); }
-                if(r===14 && c===7) { cell.classList.add('c-blu', 'star'); }
-                if((r===3&&c===7)||(r===7&&c===13)||(r===13&&c===9)||(r===9&&c===3)) cell.classList.add('star');
-                b.appendChild(cell);
-            }
-        }
+        addBase(b, 1, 1, 'red', 'b-red'); addBase(b, 1, 10, 'grn', 'b-grn'); addBase(b, 10, 1, 'blu', 'b-blu'); addBase(b, 10, 10, 'yel', 'b-yel');
+        for(let r=1; r<=15; r++) { for(let c=1; c<=15; c++) {
+            if((r<=6 && c<=6) || (r<=6 && c>=10) || (r>=10 && c<=6) || (r>=10 && c>=10) || (r>=7 && r<=9 && c>=7 && c<=9)) continue;
+            let cell = document.createElement('div'); cell.className = 'cell'; cell.style.gridRow = r; cell.style.gridColumn = c;
+            if(r===8 && c>1 && c<7) cell.classList.add('c-red'); if(c===8 && r>1 && r<7) cell.classList.add('c-grn'); if(r===8 && c>9 && c<15) cell.classList.add('c-yel'); if(c===8 && r>9 && r<15) cell.classList.add('c-blu');
+            if(r===7 && c===2) cell.classList.add('c-red', 'star'); if(r===2 && c===9) cell.classList.add('c-grn', 'star'); if(r===9 && c===14) cell.classList.add('c-yel', 'star'); if(r===14 && c===7) cell.classList.add('c-blu', 'star');
+            if((r===3&&c===7)||(r===7&&c===13)||(r===13&&c===9)||(r===9&&c===3)) cell.classList.add('star');
+            b.appendChild(cell);
+        }}
     }
-    function addBase(p, r, c, col, bor) {
-        let b = document.createElement('div'); b.className = `base ${bor}`;
-        b.style.gridRow = `${r}/span 6`; b.style.gridColumn = `${c}/span 6`;
-        b.innerHTML = `<div class="base-box ${bor}"></div>`; p.appendChild(b);
-    }
-
-    // --- LUDO PAWN RENDERING WITH STACKING ---
+    function addBase(p, r, c, col, bor) { let b = document.createElement('div'); b.className = `base ${bor}`; b.style.gridRow = `${r}/span 6`; b.style.gridColumn = `${c}/span 6`; b.innerHTML = `<div class="base-box ${bor}"></div>`; p.appendChild(b); }
+    
     function initPawns() {
-        const layer = document.getElementById('pawn-layer'); layer.innerHTML = '';
-        lPawns = []; const colors = ['r', 'g', 'y', 'b'];
+        const layer = document.getElementById('pawn-layer'); layer.innerHTML = ''; lPawns = []; const colors = ['r', 'g', 'y', 'b'];
         const basePos = [[[2.5,2.5],[2.5,4.5],[4.5,2.5],[4.5,4.5]], [[2.5,11.5],[2.5,13.5],[4.5,11.5],[4.5,13.5]], [[11.5,11.5],[11.5,13.5],[13.5,11.5],[13.5,13.5]], [[11.5,2.5],[11.5,4.5],[13.5,2.5],[13.5,4.5]]];
         for(let c=0; c<4; c++) { for(let p=0; p<4; p++) {
-            let el = document.createElement('div'); el.className = `pawn ${colors[c]}`;
-            el.onclick = () => movePawn(c, p); layer.appendChild(el);
+            let el = document.createElement('div'); el.className = `pawn ${colors[c]}`; el.onclick = () => movePawn(c, p); layer.appendChild(el);
             lPawns.push({ el, color: c, id: p, step: -1, baseR: basePos[c][p][0], baseC: basePos[c][p][1] });
             renderPawn(lPawns[lPawns.length-1]);
         }}
@@ -326,82 +191,53 @@
 
     function renderPawn(p) {
         let r, c; const size = 350/15;
-        if(p.step === -1) { r = p.baseR; c = p.baseC; }
-        else if(p.step >= 57) { r=8; c=8; p.el.style.opacity=0; }
-        else { let coord = paths[p.color][p.step].split('-'); r = parseFloat(coord[0]); c = parseFloat(coord[1]); }
-        p.el.style.top = (r-1) * size + 1 + "px"; p.el.style.left = (c-1) * size + 1 + "px";
-        
-        // Stacking Logic
-        p.el.classList.remove('stack-0', 'stack-1', 'stack-2', 'stack-3');
+        if(p.step === -1) { r = p.baseR; c = p.baseC; } else if(p.step >= 57) { r=8; c=8; p.el.style.opacity=0; } else { let coord = paths[p.color][p.step].split('-'); r = parseFloat(coord[0]); c = parseFloat(coord[1]); }
+        p.el.style.top = (r-1) * size + 2 + "px"; p.el.style.left = (c-1) * size + 2 + "px";
+        p.el.classList.remove('stack-1', 'stack-2', 'stack-3');
         let onSpot = lPawns.filter(o => o.color===p.color && o.step===p.step && o.step!==-1 && o.step<57);
-        if(onSpot.length > 1) {
-            onSpot.sort((a,b) => a.id - b.id);
-            let idx = onSpot.indexOf(p);
-            p.el.classList.add(`stack-${(onSpot.length-1)-idx}`);
-        }
-    }
-</script><script>
-    // --- LUDO GAME LOGIC ---
+        if(onSpot.length > 1) { onSpot.sort((a,b)=>a.id-b.id); let idx = onSpot.indexOf(p); if(idx>0) p.el.classList.add(`stack-${idx}`); }
+    }// --- LUDO GAME LOGIC (STRICT MERCY RULE) ---
     let lTurn=0, lPawns=[], lDice=0, lState='WAIT', lHumans=1;
-    // Paths (Red, Green, Yellow, Blue)
+    let drySpell = [0, 0, 0, 0];
     const common=["7-2","7-3","7-4","7-5","7-6","6-7","5-7","4-7","3-7","2-7","1-7","1-8","1-9","2-9","3-9","4-9","5-9","6-9","7-10","7-11","7-12","7-13","7-14","7-15","8-15","9-15","9-14","9-13","9-12","9-11","9-10","10-9","11-9","12-9","13-9","14-9","15-9","15-8","15-7","14-7","13-7","12-7","11-7","10-7","9-7","9-6","9-5","9-4","9-3","9-2","9-1","8-1"];
     const homes=[["8-2","8-3","8-4","8-5","8-6","8-7"],["2-8","3-8","4-8","5-8","6-8","7-8"],["8-14","8-13","8-12","8-11","8-10","8-9"],["14-8","13-8","12-8","11-8","10-8","9-8"]];
-    const paths={0:[],1:[],2:[],3:[]};
-    for(let c=0; c<4; c++) { for(let i=0; i<51; i++) paths[c].push(common[(c*13+i)%52]); paths[c]=paths[c].concat(homes[c]); }
+    const paths={0:[],1:[],2:[],3:[]}; for(let c=0; c<4; c++) { for(let i=0; i<51; i++) paths[c].push(common[(c*13+i)%52]); paths[c]=paths[c].concat(homes[c]); }
 
-    function startLudo() {
-        lHumans = parseInt(document.getElementById('ludo-humans').value);
-        document.getElementById('setup-ludo').classList.remove('active');
-        document.getElementById('game-ludo').classList.add('active');
-        drawLudoBoard(); initPawns(); lTurn=0; updateLudoUI();
-    }
+    function startLudo() { lHumans = parseInt(document.getElementById('ludo-humans').value); document.getElementById('setup-ludo').classList.remove('active'); document.getElementById('game-ludo').classList.add('active'); drawLudoBoard(); initPawns(); lTurn=0; updateLudoUI(); }
 
     function rollDice() {
         if(lState!=='ROLL') return;
         let d=document.getElementById('dice'); d.classList.add('rolling');
         setTimeout(()=>{
-            lDice=Math.floor(Math.random()*6)+1; d.innerText=lDice; d.classList.remove('rolling');
+            let forceSix = false;
+            let lockedPawns = lPawns.filter(p => p.color === lTurn && p.step === -1).length;
+            if (lTurn < lHumans && lockedPawns > 2) { drySpell[lTurn]++; if (drySpell[lTurn] >= 5) { forceSix = true; drySpell[lTurn] = 0; } } else { drySpell[lTurn] = 0; }
+            if (forceSix) lDice = 6; else { lDice = Math.floor(Math.random()*6)+1; if (lDice === 6) drySpell[lTurn] = 0; }
+            d.innerText=lDice; d.classList.remove('rolling');
             let playable=lPawns.filter(p=>p.color===lTurn && canMove(p,lDice));
             if(playable.length===0) { lState='WAIT'; setTimeout(nextLudoTurn, 1000); }
             else if(playable.length===1 && lHumans>lTurn) doMove(playable[0]);
-            else {
-                lState='MOVE'; document.getElementById('l-msg').innerText="Select a Pawn";
-                playable.forEach(p=>p.el.classList.add('highlight'));
-                if(lTurn>=lHumans) setTimeout(()=>{ let m=playable.find(p=>willKill(p,lDice))||playable.find(p=>p.step===-1)||playable[0]; doMove(m); }, 800);
-            }
+            else { lState='MOVE'; document.getElementById('l-msg').innerText="Select a Pawn"; playable.forEach(p=>p.el.classList.add('highlight')); if(lTurn>=lHumans) setTimeout(()=>{ let m=playable.find(p=>willKill(p,lDice))||playable.find(p=>p.step===-1)||playable[0]; doMove(m); }, 800); }
         }, 400);
     }
 
     function canMove(p,d) { if(p.step===-1)return d===6; return(p.step+d)<57; }
     function movePawn(c,id) { if(lState!=='MOVE'||c!==lTurn)return; let p=lPawns.find(x=>x.color===c&&x.id===id); if(canMove(p,lDice))doMove(p); }
-    
     function doMove(p) {
         lPawns.forEach(x=>x.el.classList.remove('highlight'));
-        let oldStep = p.step;
-        if(p.step===-1) p.step=0; else p.step+=lDice;
-        // Kill
+        let oldStep = p.step; if(p.step===-1) p.step=0; else p.step+=lDice;
         let myPos=paths[p.color][p.step];
-        if(!isSafe(myPos)) {
-            let enemy=lPawns.find(x=>x.color!==p.color && x.step!==-1 && x.step<52 && paths[x.color][x.step]===myPos);
-            if(enemy) { enemy.step=-1; renderPawn(enemy); }
-        }
-        // Re-render affected stacks
-        renderPawn(p);
-        if(oldStep!==-1) lPawns.filter(o=>o.color===p.color && o.step===oldStep && o!==p).forEach(renderPawn);
-        lPawns.filter(o=>o.color===p.color && o.step===p.step && o!==p).forEach(renderPawn);
-
-        if(lDice===6) { lState='ROLL'; document.getElementById('l-msg').innerText="Rolled 6! Roll Again"; if(lTurn>=lHumans)setTimeout(rollDice,1000); }
-        else { lState='WAIT'; setTimeout(nextLudoTurn, 800); }
+        if(!isSafe(myPos)) { let enemy=lPawns.find(x=>x.color!==p.color && x.step!==-1 && x.step<52 && paths[x.color][x.step]===myPos); if(enemy) { enemy.step=-1; renderPawn(enemy); } }
+        renderPawn(p); if(oldStep!==-1) lPawns.filter(o=>o.color===p.color && o.step===oldStep && o!==p).forEach(renderPawn); lPawns.filter(o=>o.color===p.color && o.step===p.step && o!==p).forEach(renderPawn);
+        if(lDice===6) { lState='ROLL'; document.getElementById('l-msg').innerText="Rolled 6! Roll Again"; if(lTurn>=lHumans) setTimeout(rollDice,1000); } else { lState='WAIT'; setTimeout(nextLudoTurn, 800); }
     }
-
     function nextLudoTurn() { lTurn=(lTurn+1)%4; updateLudoUI(); if(lTurn>=lHumans)setTimeout(rollDice,1000); }
-    function updateLudoUI() {
-        const n=["RED","GREEN","YELLOW","BLUE"], c=["var(--r)","var(--g)","var(--y)","var(--b)"];
-        let t=document.getElementById('l-turn'); t.innerText=n[lTurn]+"'S TURN"; t.style.color=c[lTurn];
-        document.getElementById('l-msg').innerText=lTurn<lHumans?"Tap Dice":"CPU Rolling..."; document.getElementById('dice').innerText="🎲"; lState='ROLL';
-    }
+    function updateLudoUI() { const n=["RED","GREEN","YELLOW","BLUE"], c=["var(--r)","var(--g)","var(--y)","var(--b)"]; let t=document.getElementById('l-turn'); t.innerText=n[lTurn]+"'S TURN"; t.style.color=c[lTurn]; document.getElementById('l-msg').innerText=lTurn<lHumans?"Tap Dice":"CPU Rolling..."; document.getElementById('dice').innerText="🎲"; lState='ROLL'; }
     function isSafe(c) { return ["7-2","9-3","13-7","14-9","9-14","7-13","3-9","2-7"].includes(c); }
     function willKill(p,d) { if(p.step===-1)return false; let fp=paths[p.color][p.step+d]; if(isSafe(fp))return false; return lPawns.some(x=>x.color!==p.color && x.step!==-1 && paths[x.color][x.step]===fp); }
+
+    // INSTALL APP SCRIPT
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').then(reg => console.log('SW Registered')).catch(err => console.log('SW Fail', err)); }); }
 </script>
 </body>
 </html>
