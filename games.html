@@ -6,384 +6,550 @@
     <title>Maaz Gaming Arena</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #121212; --card: #1e1e1e; --text: #fff; --neon-blue: #00D4FF; --neon-red: #FF3131; --ludo-r: #ff4757; --ludo-g: #2ed573; --ludo-y: #ffa502; --ludo-b: #3742fa; }
-        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; margin: 0; padding: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        :root { 
+            --bg: #0f0f1a; --card: #1b1b2f; --text: #fff; 
+            --neon-blue: #00D4FF; --neon-red: #FF3131; 
+            --r: #ef5777; --g: #0be881; --y: #ffdd59; --b: #4bcffa;
+            --safe-star: url('data:image/svg+xml;utf8,<svg fill="%23888" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>');
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; margin: 0; padding: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; user-select: none; }
         
-        /* NAVIGATION */
-        .nav-bar { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 100; }
+        /* NAV & MENU */
+        .nav-bar { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #333; }
         .home-btn { background: #333; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .menu-screen, .game-container { position: absolute; top: 60px; left: 0; width: 100%; height: calc(100% - 60px); display: none; flex-direction: column; align-items: center; overflow-y: auto; padding-bottom: 20px; }
+        .menu-screen.active, .game-container.active { display: flex; animation: fade 0.3s; }
+        @keyframes fade { from {opacity:0;} to {opacity:1;} }
         
-        /* MENUS */
-        .menu-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; gap: 20px; animation: fade 0.5s; }
-        .game-card { width: 80%; max-width: 300px; padding: 30px; border-radius: 20px; background: var(--card); box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; transition: 0.2s; border: 2px solid #333; }
-        .game-card:hover { transform: scale(1.05); border-color: var(--neon-blue); }
-        .game-card h2 { margin: 10px 0 0; }
-        
-        /* GAME CONTAINERS */
-        .game-container { display: none; flex-direction: column; align-items: center; justify-content: flex-start; height: 100%; padding-top: 20px; animation: slideUp 0.4s; overflow-y: auto; }
-        .active { display: flex; }
-        @keyframes slideUp { from {transform: translateY(50px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+        /* MENU CARDS */
+        .game-card { width: 85%; max-width: 320px; padding: 25px; margin: 15px 0; border-radius: 20px; background: linear-gradient(145deg, #1e1e30, #161625); box-shadow: 0 10px 20px rgba(0,0,0,0.4); border: 1px solid #333; text-align: center; cursor: pointer; transition: 0.2s; }
+        .game-card:active { transform: scale(0.96); }
 
-        /* --- TIC TAC TOE STYLES --- */
-        .ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 300px; margin-top: 30px; }
-        .ttt-cell { aspect-ratio: 1; background: #222; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; cursor: pointer; box-shadow: inset 0 0 10px #000; }
-        .ttt-x { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
-        .ttt-o { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); }
-        .ttt-controls { margin-top: 20px; display: flex; gap: 10px; }
+        /* TIC TAC TOE */
+        .ttt-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 300px; margin: 20px auto; }
+        .ttt-cell { aspect-ratio: 1; background: #222; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; font-weight: 800; cursor: pointer; box-shadow: inset 3px 3px 10px rgba(0,0,0,0.5); }
+        .x { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
+        .o { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); }
 
-        /* --- LUDO STYLES --- */
-        #ludo-setup { text-align: center; }
-        .ludo-wrapper { width: 340px; height: 340px; position: relative; margin-top: 10px; background: white; border: 2px solid #333; }
-        .ludo-board { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(15, 1fr); }
+        /* LUDO BOARD */
+        .ludo-wrapper { width: 350px; height: 350px; background: #fff; margin-top: 20px; border: 2px solid #000; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .ludo-grid { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(15, 1fr); background: #eee; }
         
-        .cell { border: 0.5px solid #ddd; position: relative; }
-        .base { grid-row: span 6; grid-column: span 6; border: 1px solid #000; display: flex; align-items: center; justify-content: center; }
-        .base-inner { width: 70%; height: 70%; background: white; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 10px; border-radius: 10px; }
-        .spot { border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); }
+        .cell { border: 0.5px solid rgba(0,0,0,0.1); position: relative; display: flex; justify-content: center; align-items: center; }
+        .base { grid-column: span 6; grid-row: span 6; border: 1px solid #000; padding: 15px; }
+        .base-box { width: 100%; height: 100%; background: #fff; border-radius: 15px; display: grid; grid-template-columns: 1fr 1fr; place-items: center; border: 15px solid transparent; }
         
-        /* Colors */
-        .bg-r { background: var(--ludo-r); } .bg-g { background: var(--ludo-g); }
-        .bg-y { background: var(--ludo-y); } .bg-b { background: var(--ludo-b); }
-        .safe { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23888"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'); background-size: 80%; background-position: center; background-repeat: no-repeat; opacity: 0.8; }
+        .c-red { background: var(--r); } .b-red { border-color: var(--r); }
+        .c-grn { background: var(--g); } .b-grn { border-color: var(--g); }
+        .c-yel { background: var(--y); } .b-yel { border-color: var(--y); }
+        .c-blu { background: var(--b); } .b-blu { border-color: var(--b); }
+        
+        .star { background-image: var(--safe-star); background-size: 80%; background-repeat: no-repeat; background-position: center; opacity: 0.6; }
+        .center-box { grid-column: 7 / 10; grid-row: 7 / 10; background: conic-gradient(var(--g) 0deg 90deg, var(--r) 90deg 180deg, var(--b) 180deg 270deg, var(--y) 270deg 360deg); border: 1px solid #000; position: relative; }
+        
+        /* 3D PAWNS */
+        .pawn { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); position: absolute; z-index: 10; box-shadow: 0 3px 5px rgba(0,0,0,0.5), inset 0 -3px 5px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); cursor: pointer; }
+        .pawn.r { background: radial-gradient(circle at 30% 30%, #ff8da1, #ef5777); }
+        .pawn.g { background: radial-gradient(circle at 30% 30%, #7bed9f, #2ed573); }
+        .pawn.y { background: radial-gradient(circle at 30% 30%, #ffeaa7, #fdcb6e); }
+        .pawn.b { background: radial-gradient(circle at 30% 30%, #74b9ff, #0984e3); }
+        .pawn.stacked { transform: scale(0.8); }
+        .pawn.highlight { animation: bounce 0.6s infinite alternate; box-shadow: 0 0 10px #fff; border-color: #fff; }
+        
+        @keyframes bounce { from { transform: translateY(0) scale(1.1); } to { transform: translateY(-8px) scale(1.1); } }
 
-        /* Tokens */
-        .token { width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.5); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; transition: 0.3s; cursor: pointer; }
-        .token.stack-2 { transform: translate(-50%, -60%); } 
-        .token.highlight { border: 2px solid #fff; box-shadow: 0 0 10px yellow; animation: bounce 0.5s infinite alternate; }
-        @keyframes bounce { from { transform: translate(-50%, -50%); } to { transform: translate(-50%, -65%); } }
-
-        /* Ludo Controls */
-        .ludo-panel { margin-top: 15px; background: var(--card); padding: 10px; border-radius: 15px; width: 340px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
-        .dice-box { width: 50px; height: 50px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: black; border: 2px solid #333; cursor: pointer; }
-        .turn-ind { font-size: 0.9rem; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+        /* DICE & CONTROLS */
+        .controls { width: 350px; background: var(--card); padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border: 1px solid #333; }
+        .dice { width: 50px; height: 50px; background: #fff; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; color: #000; box-shadow: inset -2px -2px 5px rgba(0,0,0,0.2); cursor: pointer; }
+        .dice.rolling { animation: roll 0.4s ease-in-out; }
+        @keyframes roll { 0% { transform: rotate(0); } 100% { transform: rotate(360deg); } }
         
-        button { background: var(--neon-blue); border: none; padding: 10px 20px; border-radius: 8px; color: #000; font-weight: bold; cursor: pointer; }
-        select { padding: 10px; border-radius: 8px; background: #333; color: white; border: 1px solid #555; }
+        select, button { padding: 12px; background: #333; color: white; border: 1px solid #555; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 10px; }
+        button.primary { background: var(--neon-blue); color: #000; border: none; }
     </style>
 </head>
 <body><div class="nav-bar">
-    <div style="font-weight:800; color:var(--neon-blue);">MAAZ ARENA</div>
+    <div style="font-weight:800; color:var(--neon-blue); letter-spacing:1px;">MAAZ ARENA</div>
     <button class="home-btn" onclick="window.location.href='index.html'">🏠 Home</button>
 </div>
 
-<div id="menu" class="menu-screen">
-    <h1>Choose Game</h1>
-    <div class="game-card" onclick="startTTT()">
-        <div style="font-size:3rem;">❌⭕</div>
-        <h2>Tic Tac Toe</h2>
-        <p>Neon Edition • Unbeatable AI</p>
-    </div>
-    <div class="game-card" onclick="showLudoSetup()">
-        <div style="font-size:3rem;">🎲</div>
-        <h2>Ludo Master</h2>
-        <p>4 Player • AI Support</p>
-    </div>
-</div>
-
-<div id="ttt-game" class="game-container">
-    <h2 style="color:var(--neon-blue); margin:0;">NEON TACTICS</h2>
-    <div class="ttt-board" id="t-board"></div>
-    <div id="t-status" style="margin-top:20px; font-weight:bold;">Player X's Turn</div>
-    <div class="ttt-controls">
-        <button onclick="resetTTT()">Restart</button>
-        <button onclick="document.getElementById('ttt-game').classList.remove('active'); document.getElementById('menu').style.display='flex';" style="background:#333; color:white;">Exit</button>
-    </div>
-</div>
-
-<div id="ludo-setup" class="game-container">
-    <h2>Ludo Setup</h2>
-    <p>How many humans?</p>
-    <select id="human-count">
-        <option value="1">1 Human (vs 3 CPU)</option>
-        <option value="2">2 Humans (vs 2 CPU)</option>
-        <option value="3">3 Humans (vs 1 CPU)</option>
-        <option value="4">4 Humans (No CPU)</option>
-    </select>
-    <br><br>
-    <button onclick="initLudo()">Start Game</button>
-    <br><br>
-    <button onclick="exitLudo()" style="background:#333; color:white;">Back</button>
-</div><div id="ludo-game" class="game-container">
-    <div class="ludo-wrapper" id="ludo-board-el"></div>
+<div id="menu" class="menu-screen active">
+    <h1 style="margin-top:40px;">SELECT GAME</h1>
     
-    <div class="ludo-panel">
-        <div>
-            <div class="turn-ind" id="turn-text" style="color:var(--ludo-r)">RED'S TURN</div>
-            <div style="font-size:0.7rem; opacity:0.7;" id="status-text">Roll the dice</div>
-        </div>
-        <div class="dice-box" id="dice" onclick="rollDice()">🎲</div>
+    <div class="game-card" onclick="openSetup('ttt')">
+        <div style="font-size:3.5rem;">❌⭕</div>
+        <h2>Tic Tac Toe</h2>
+        <p style="opacity:0.6">Neon Edition</p>
+    </div>
+
+    <div class="game-card" onclick="openSetup('ludo')">
+        <div style="font-size:3.5rem;">🎲</div>
+        <h2>Ludo Royal</h2>
+        <p style="opacity:0.6">4 Player • Real Rules</p>
     </div>
 </div>
 
-<script>
-    // --- TIC TAC TOE LOGIC ---
-    let tBoard = Array(9).fill(null), tTurn = 'X';
-    function startTTT() {
-        document.getElementById('menu').style.display = 'none';
-        document.getElementById('ttt-game').classList.add('active');
-        renderTTT();
+<div id="setup-ttt" class="menu-screen">
+    <h2>Difficulty</h2>
+    <div style="width:80%; max-width:300px;">
+        <select id="ttt-diff">
+            <option value="easy">Easy (Random)</option>
+            <option value="med">Medium (Smartish)</option>
+            <option value="hard">Hard (Unbeatable)</option>
+        </select>
+        <button class="primary" onclick="startTTT()">PLAY</button>
+        <button onclick="goHome()">BACK</button>
+    </div>
+</div>
+
+<div id="setup-ludo" class="menu-screen">
+    <h2>Ludo Setup</h2>
+    <div style="width:80%; max-width:300px;">
+        <p>Number of Humans:</p>
+        <select id="ludo-humans">
+            <option value="1">1 Human vs 3 CPU</option>
+            <option value="2">2 Humans vs 2 CPU</option>
+            <option value="3">3 Humans vs 1 CPU</option>
+            <option value="4">4 Humans (No CPU)</option>
+        </select>
+        <button class="primary" onclick="startLudo()">START GAME</button>
+        <button onclick="goHome()">BACK</button>
+    </div>
+</div>
+
+<div id="game-ttt" class="game-container">
+    <div class="ttt-board" id="t-board"></div>
+    <h2 id="t-status">Your Turn</h2>
+    <button onclick="resetTTT()" style="width:auto; padding:10px 30px;">Restart</button>
+    <button onclick="goHome()" style="width:auto; padding:10px 30px; background:#333;">Exit</button>
+</div>
+
+<div id="game-ludo" class="game-container">
+    <div class="ludo-wrapper">
+        <div class="ludo-grid" id="l-board">
+            </div>
+        <div id="pawn-layer"></div>
+    </div>
+    
+    <div class="controls">
+        <div>
+            <div id="l-turn" style="font-weight:900; font-size:1.1rem; color:var(--r)">RED'S TURN</div>
+            <div id="l-msg" style="font-size:0.8rem; opacity:0.7;">Tap Dice to Roll</div>
+        </div>
+        <div class="dice" id="dice" onclick="rollDice()">🎲</div>
+    </div>
+    <div style="margin-top:15px;">
+        <button onclick="goHome()" style="background:#333; width:auto; padding:8px 20px;">Exit Game</button>
+    </div>
+</div><script>
+    // --- NAVIGATION ---
+    function openSetup(game) {
+        document.querySelectorAll('.menu-screen').forEach(el => el.classList.remove('active'));
+        document.getElementById('setup-' + game).classList.add('active');
     }
+    function goHome() {
+        document.querySelectorAll('.menu-screen, .game-container').forEach(el => el.classList.remove('active'));
+        document.getElementById('menu').classList.add('active');
+    }
+
+    // --- TIC TAC TOE LOGIC ---
+    let tBoard = Array(9).fill(null);
+    let tDiff = 'hard';
+    
+    function startTTT() {
+        tDiff = document.getElementById('ttt-diff').value;
+        document.getElementById('setup-ttt').classList.remove('active');
+        document.getElementById('game-ttt').classList.add('active');
+        resetTTT();
+    }
+
+    function resetTTT() {
+        tBoard.fill(null);
+        renderTTT();
+        document.getElementById('t-status').innerText = "Your Turn (X)";
+    }
+
     function renderTTT() {
         const b = document.getElementById('t-board'); b.innerHTML = '';
-        tBoard.forEach((c, i) => {
-            let d = document.createElement('div'); d.className = 'ttt-cell ' + (c=='X'?'ttt-x':c=='O'?'ttt-o':'');
-            d.innerText = c || '';
-            d.onclick = () => moveTTT(i);
-            b.appendChild(d);
+        tBoard.forEach((v, i) => {
+            let c = document.createElement('div');
+            c.className = 'ttt-cell ' + (v ? v.toLowerCase() : '');
+            c.innerText = v || '';
+            c.onclick = () => moveTTT(i);
+            b.appendChild(c);
         });
     }
+
     function moveTTT(i) {
-        if(tBoard[i] || checkWin(tBoard)) return;
-        tBoard[i] = 'X'; renderTTT();
-        if(checkWin(tBoard)) { document.getElementById('t-status').innerText = "YOU WIN!"; return; }
-        if(!tBoard.includes(null)) { document.getElementById('t-status').innerText = "DRAW!"; return; }
+        if (tBoard[i] || checkWinner(tBoard)) return;
+        tBoard[i] = 'X';
+        renderTTT();
         
-        // AI Turn (Minimax)
+        let win = checkWinner(tBoard);
+        if (win) { endTTT(win); return; }
+        if (!tBoard.includes(null)) { endTTT('draw'); return; }
+
         document.getElementById('t-status').innerText = "AI Thinking...";
-        setTimeout(() => {
-            let best = minimax(tBoard, 'O');
-            tBoard[best.idx] = 'O'; renderTTT();
-            if(checkWin(tBoard)) document.getElementById('t-status').innerText = "AI WINS!";
-            else document.getElementById('t-status').innerText = "Your Turn";
-        }, 500);
+        setTimeout(() => aiMoveTTT(), 500);
     }
-    function checkWin(b) {
-        const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return w.find(c => b[c[0]] && b[c[0]]==b[c[1]] && b[c[0]]==b[c[2]]) ? b[w.find(c => b[c[0]] && b[c[0]]==b[c[1]] && b[c[0]]==b[c[2]])[0]] : null;
-    }
-    function minimax(bd, p) {
-        let empty = bd.map((v,i)=>v==null?i:null).filter(v=>v!=null);
-        let winner = checkWin(bd);
-        if(winner=='O') return {score:10}; if(winner=='X') return {score:-10}; if(empty.length==0) return {score:0};
-        let moves = [];
-        for(let i of empty) {
-            let nb = [...bd]; nb[i]=p;
-            let res = minimax(nb, p=='O'?'X':'O');
-            moves.push({idx:i, score:res.score});
-        }
-        return moves.reduce((a,c) => p=='O' ? (c.score > a.score ? c : a) : (c.score < a.score ? c : a));
-    }
-    function resetTTT() { tBoard=Array(9).fill(null); renderTTT(); document.getElementById('t-status').innerText="Player X's Turn"; }
-</script><script>
-    // --- LUDO LOGIC ---
-    const colors = ['r', 'g', 'y', 'b']; // Red, Green, Yellow, Blue
-    
-    // Hardcoded Coordinate mapping for 15x15 grid (Standard Path)
-    function getCoords(step, colorIdx) {
-        const track = [[6,1],[6,2],[6,3],[6,4],[6,5],[5,6],[4,6],[3,6],[2,6],[1,6],[0,6],[0,7],[0,8],[1,8],[2,8],[3,8],[4,8],[5,8],[6,9],[6,10],[6,11],[6,12],[6,13],[6,14],[7,14],[8,14],[8,13],[8,12],[8,11],[8,10],[8,9],[9,8],[10,8],[11,8],[12,8],[13,8],[14,8],[14,7],[14,6],[13,6],[12,6],[11,6],[10,6],[9,6],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0],[7,0],[6,0]];
-        const homeR = [[7,1],[7,2],[7,3],[7,4],[7,5],[7,6]];
-        const homeG = [[1,7],[2,7],[3,7],[4,7],[5,7],[6,7]];
-        const homeY = [[7,13],[7,12],[7,11],[7,10],[7,9],[7,8]];
-        const homeB = [[13,7],[12,7],[11,7],[10,7],[9,7],[8,7]];
 
-        let offset = colorIdx * 13; 
-        let adjustedStep = step;
-        
-        if (adjustedStep < 51) {
-            let idx = (offset + adjustedStep) % 52;
-            return {r: track[idx][0], c: track[idx][1]};
+    function aiMoveTTT() {
+        let move;
+        if (tDiff === 'easy') {
+            let empty = tBoard.map((v, i) => v === null ? i : null).filter(v => v !== null);
+            move = empty[Math.floor(Math.random() * empty.length)];
+        } else if (tDiff === 'med') {
+            // Block or Random
+            move = findBestMove(tBoard, 'O', false); // False means depth 1 (simple)
         } else {
-            // Home stretch
-            let hStep = adjustedStep - 51;
-            if(hStep > 5) hStep = 5; // End
-            if(colorIdx==0) return {r: homeR[hStep][0], c: homeR[hStep][1]};
-            if(colorIdx==1) return {r: homeG[hStep][0], c: homeG[hStep][1]};
-            if(colorIdx==2) return {r: homeY[hStep][0], c: homeY[hStep][1]};
-            if(colorIdx==3) return {r: homeB[hStep][0], c: homeB[hStep][1]};
+            // Unbeatable
+            move = findBestMove(tBoard, 'O', true);
         }
-        return {r:0,c:0};
-    }
-
-    let tokens = []; // {color: 0-3, id: 0-3, pos: -1 (base) to 56 (win)}
-    let turn = 0; // 0=Red, 1=Green...
-    let diceVal = 0;
-    let playersType = []; // 'human' or 'cpu'
-    let state = 'WAIT'; // WAIT, ROLL, MOVE
-
-    function showLudoSetup() {
-        document.getElementById('menu').style.display = 'none';
-        document.getElementById('ludo-setup').classList.add('active');
-    }
-    function exitLudo() {
-        document.getElementById('ludo-setup').classList.remove('active');
-        document.getElementById('ludo-game').classList.remove('active');
-        document.getElementById('menu').style.display = 'flex';
-    }
-
-    function initLudo() {
-        document.getElementById('ludo-setup').classList.remove('active');
-        document.getElementById('ludo-game').classList.add('active');
         
-        // Draw Board
-        const b = document.getElementById('ludo-board-el'); b.innerHTML = '';
-        for(let r=0; r<15; r++) {
-            for(let c=0; c<15; c++) {
-                let d = document.createElement('div'); d.className = 'cell';
-                d.style.gridRowStart = r+1; d.style.gridColumnStart = c+1;
-                
-                // Bases & Centers
-                if(r<6 && c<6) { if(r==0 && c==0) { d.className='base bg-r'; d.innerHTML='<div class="base-inner"><div class="spot"></div><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>'; b.appendChild(d); } continue; }
-                if(r<6 && c>8) { if(r==0 && c==9) { d.className='base bg-g'; d.innerHTML='<div class="base-inner"><div class="spot"></div><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>'; b.appendChild(d); } continue; }
-                if(r>8 && c>8) { if(r==9 && c==9) { d.className='base bg-y'; d.innerHTML='<div class="base-inner"><div class="spot"></div><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>'; b.appendChild(d); } continue; }
-                if(r>8 && c<6) { if(r==9 && c==0) { d.className='base bg-b'; d.innerHTML='<div class="base-inner"><div class="spot"></div><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>'; b.appendChild(d); } continue; }
-                
-                // Path Colors
-                if(r==7 && c>0 && c<6) d.classList.add('bg-r');
-                if(c==7 && r>0 && r<6) d.classList.add('bg-g');
-                if(r==7 && c>8 && c<14) d.classList.add('bg-y');
-                if(c==7 && r>8 && r<14) d.classList.add('bg-b');
-                if(r==7 && c==7) d.style.background = 'conic-gradient(#2ed573 90deg, #ff4757 90deg 180deg, #3742fa 180deg 270deg, #ffa502 270deg)';
+        tBoard[move] = 'O';
+        renderTTT();
+        let win = checkWinner(tBoard);
+        if (win) endTTT(win);
+        else document.getElementById('t-status').innerText = "Your Turn (X)";
+    }
 
-                // Safe Stars
-                if((r==6&&c==1)||(r==2&&c==6)||(r==1&&c==8)||(r==6&&c==12)||(r==8&&c==13)||(r==12&&c==8)||(r==13&&c==6)||(r==8&&c==2)) d.classList.add('safe');
+    function endTTT(res) {
+        if(res === 'X') document.getElementById('t-status').innerText = "YOU WIN! 🎉";
+        else if(res === 'O') document.getElementById('t-status').innerText = "AI WINS! 🤖";
+        else document.getElementById('t-status').innerText = "DRAW! 🤝";
+    }
+
+    function checkWinner(bd) {
+        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        for (let w of wins) {
+            if (bd[w[0]] && bd[w[0]] === bd[w[1]] && bd[w[0]] === bd[w[2]]) return bd[w[0]];
+        }
+        return null;
+    }
+
+    function findBestMove(bd, player, hard) {
+        // Simple Minimax for Hard, One-step for Medium
+        let empty = bd.map((v, i) => v === null ? i : null).filter(v => v !== null);
+        
+        // Check immediate win/block
+        for(let i of empty) {
+            bd[i] = player;
+            if(checkWinner(bd) === player) { bd[i]=null; return i; }
+            bd[i] = null;
+        }
+        let opponent = player==='O'?'X':'O';
+        for(let i of empty) {
+            bd[i] = opponent;
+            if(checkWinner(bd) === opponent) { bd[i]=null; return i; }
+            bd[i] = null;
+        }
+        
+        if(!hard) return empty[Math.floor(Math.random() * empty.length)];
+
+        // Minimax (Hard)
+        let bestScore = -Infinity;
+        let bestMove = empty[0];
+        for (let i of empty) {
+            bd[i] = player;
+            let score = minimax(bd, 0, false);
+            bd[i] = null;
+            if (score > bestScore) { bestScore = score; bestMove = i; }
+        }
+        return bestMove;
+    }
+
+    function minimax(bd, depth, isMax) {
+        let res = checkWinner(bd);
+        if (res === 'O') return 10 - depth;
+        if (res === 'X') return depth - 10;
+        if (!bd.includes(null)) return 0;
+
+        if (isMax) {
+            let best = -Infinity;
+            for (let i = 0; i < 9; i++) {
+                if (bd[i] === null) {
+                    bd[i] = 'O';
+                    best = Math.max(best, minimax(bd, depth + 1, false));
+                    bd[i] = null;
+                }
+            }
+            return best;
+        } else {
+            let best = Infinity;
+            for (let i = 0; i < 9; i++) {
+                if (bd[i] === null) {
+                    bd[i] = 'X';
+                    best = Math.min(best, minimax(bd, depth + 1, true));
+                    bd[i] = null;
+                }
+            }
+            return best;
+        }
+    }
+</script><script>
+    // --- LUDO BOARD GENERATION (15x15) ---
+    // Bases: Red(TL), Green(TR), Blue(BR), Yellow(BL) -- Note: Standard Ludo varies, I will strictly follow this layout:
+    // Red=TopLeft, Green=TopRight, Blue=BottomLeft, Yellow=BottomRight.
+    
+    function drawLudoBoard() {
+        const b = document.getElementById('l-board');
+        b.innerHTML = '';
+        
+        // Add Center
+        let center = document.createElement('div');
+        center.className = 'center-box';
+        b.appendChild(center);
+
+        // Add 4 Bases
+        addBase(b, 1, 1, 'red', 'b-red');
+        addBase(b, 1, 10, 'grn', 'b-grn');
+        addBase(b, 10, 1, 'blu', 'b-blu'); // Blue at bottom left
+        addBase(b, 10, 10, 'yel', 'b-yel'); // Yellow at bottom right
+
+        // Generate Cells
+        for(let r=1; r<=15; r++) {
+            for(let c=1; c<=15; c++) {
+                // Skip Bases and Center (they are absolute or spanned)
+                if((r<=6 && c<=6) || (r<=6 && c>=10) || (r>=10 && c<=6) || (r>=10 && c>=10) || (r>=7 && r<=9 && c>=7 && c<=9)) continue;
                 
-                b.appendChild(d);
+                let cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.style.gridRow = r;
+                cell.style.gridColumn = c;
+                cell.id = `c-${r}-${c}`; // Important for movement
+                
+                // Color Paths (Home Straights)
+                if(r===8 && c>1 && c<7) cell.classList.add('c-red'); // Red Home Path
+                if(c===8 && r>1 && r<7) cell.classList.add('c-grn'); // Green Home Path
+                if(r===8 && c>9 && c<15) cell.classList.add('c-yel'); // Yellow Home Path (Right)
+                if(c===8 && r>9 && r<15) cell.classList.add('c-blu'); // Blue Home Path (Bottom)
+                
+                // Start Points
+                if(r===7 && c===2) { cell.classList.add('c-red'); cell.classList.add('star'); } // Red Start
+                if(r===2 && c===9) { cell.classList.add('c-grn'); cell.classList.add('star'); } // Green Start
+                if(r===9 && c===14) { cell.classList.add('c-yel'); cell.classList.add('star'); } // Yellow Start
+                if(r===14 && c===7) { cell.classList.add('c-blu'); cell.classList.add('star'); } // Blue Start
+                
+                // Other Stars
+                if(r===3 && c===7) cell.classList.add('star');
+                if(r===7 && c===13) cell.classList.add('star');
+                if(r===13 && c===9) cell.classList.add('star');
+                if(r===9 && c===3) cell.classList.add('star');
+
+                b.appendChild(cell);
             }
         }
+    }
 
-        // Init Logic
-        let hCount = parseInt(document.getElementById('human-count').value);
-        playersType = [];
-        for(let i=0; i<4; i++) playersType.push(i < hCount ? 'human' : 'cpu');
-        
-        tokens = [];
-        for(let c=0; c<4; c++) {
-            for(let t=0; t<4; t++) tokens.push({c, t, pos: -1, el: null});
-        }
-        
-        // Render Tokens
-        tokens.forEach(tk => {
-            let el = document.createElement('div');
-            el.className = 'token';
-            el.style.backgroundColor = cToHex(tk.c);
-            el.onclick = () => tokenClick(tk);
-            b.appendChild(el);
-            tk.el = el;
-            updateTokenPos(tk);
-        });
-
-        turn = 0;
-        state = 'ROLL';
-        updateUI();
+    function addBase(parent, r, c, colClass, borClass) {
+        let base = document.createElement('div');
+        base.className = `base ${borClass}`;
+        base.style.gridRow = `${r} / span 6`;
+        base.style.gridColumn = `${c} / span 6`;
+        base.innerHTML = `<div class="base-box ${borClass}"></div>`;
+        parent.appendChild(base);
     }
 </script><script>
-    function cToHex(c) { return ['#ff4757','#2ed573','#ffa502','#3742fa'][c]; }
+    // --- LUDO GAME LOGIC ---
+    let lTurn = 0; // 0:Red, 1:Green, 2:Yellow, 3:Blue
+    let lPawns = [];
+    let lDice = 0;
+    let lState = 'WAIT'; // WAIT, ROLL, MOVE
+    let lHumans = 1;
     
-    function updateTokenPos(tk) {
-        let el = tk.el;
-        if(tk.pos === -1) {
-            // In Base positions
-            let baseMap = [
-                {r:1,c:1}, {r:1,c:4}, {r:4,c:1}, {r:4,c:4}, // R
-                {r:1,c:10}, {r:1,c:13}, {r:4,c:10}, {r:4,c:13}, // G
-                {r:10,c:10}, {r:10,c:13}, {r:13,c:10}, {r:13,c:13}, // Y
-                {r:10,c:1}, {r:10,c:4}, {r:13,c:1}, {r:13,c:4} // B
-            ];
-            let offset = tk.c * 4 + tk.t;
-            el.style.top = `calc(${(baseMap[offset].r * 6.66)}% + 3.33%)`;
-            el.style.left = `calc(${(baseMap[offset].c * 6.66)}% + 3.33%)`;
-            el.style.display = 'block';
-        } else if (tk.pos === 57) {
-            el.style.display = 'none'; // Won
-        } else {
-            let cd = getCoords(tk.pos, tk.c);
-            el.style.top = `calc(${(cd.r * 6.66)}% + 3.33%)`;
-            el.style.left = `calc(${(cd.c * 6.66)}% + 3.33%)`;
+    // Path Coordinates (The strict 52 step loop + Home path)
+    // Format: "row-col"
+    const paths = {
+        0: generatePath(0), // Red
+        1: generatePath(1), // Green
+        2: generatePath(2), // Yellow
+        3: generatePath(3)  // Blue
+    };
+
+    function startLudo() {
+        lHumans = parseInt(document.getElementById('ludo-humans').value);
+        document.getElementById('setup-ludo').classList.remove('active');
+        document.getElementById('game-ludo').classList.add('active');
+        drawLudoBoard();
+        initPawns();
+        lTurn = 0;
+        updateLudoUI();
+    }
+
+    function initPawns() {
+        const layer = document.getElementById('pawn-layer');
+        layer.innerHTML = '';
+        lPawns = [];
+        const colors = ['r', 'g', 'y', 'b'];
+        
+        // Base positions for 4 pawns per color
+        const basePos = [
+            [[2.5,2.5],[2.5,4.5],[4.5,2.5],[4.5,4.5]], // Red Base
+            [[2.5,11.5],[2.5,13.5],[4.5,11.5],[4.5,13.5]], // Green Base
+            [[11.5,11.5],[11.5,13.5],[13.5,11.5],[13.5,13.5]], // Yellow Base
+            [[11.5,2.5],[11.5,4.5],[13.5,2.5],[13.5,4.5]] // Blue Base
+        ];
+
+        for(let c=0; c<4; c++) {
+            for(let p=0; p<4; p++) {
+                let pawn = document.createElement('div');
+                pawn.className = `pawn ${colors[c]}`;
+                pawn.onclick = () => movePawn(c, p);
+                layer.appendChild(pawn);
+                
+                lPawns.push({
+                    el: pawn, color: c, id: p, step: -1, // -1 means in base
+                    baseR: basePos[c][p][0], baseC: basePos[c][p][1]
+                });
+                renderPawn(lPawns[lPawns.length-1]);
+            }
         }
+    }
+
+    function renderPawn(p) {
+        let r, c;
+        if(p.step === -1) { r = p.baseR; c = p.baseC; } // In Base
+        else if(p.step >= paths[p.color].length) { r=8; c=8; p.el.style.opacity=0; } // Won
+        else {
+            let coord = paths[p.color][p.step].split('-');
+            r = parseFloat(coord[0]); c = parseFloat(coord[1]);
+        }
+        
+        // Convert Grid Row/Col to pixels (350px box / 15 grids = 23.33px per grid)
+        const size = 350/15;
+        p.el.style.top = (r-1) * size + 2 + "px"; // +2 for centering
+        p.el.style.left = (c-1) * size + 2 + "px";
+        
+        // Handle Stacking (Simple offset)
+        // Advanced stacking requires checking all pawns positions, skipped for brevity in Lite version
     }
 
     function rollDice() {
-        if(state !== 'ROLL') return;
-        diceVal = Math.floor(Math.random() * 6) + 1;
-        document.getElementById('dice').innerText = diceVal;
+        if(lState !== 'ROLL') return;
+        let d = document.getElementById('dice');
+        d.classList.add('rolling');
         
-        // Check valid moves
-        let movables = tokens.filter(tk => tk.c === turn && canMove(tk, diceVal));
-        
-        if(movables.length === 0) {
-            state = 'WAIT';
-            setTimeout(nextTurn, 1000);
-        } else if (movables.length === 1 && playersType[turn] === 'human') {
-            doMove(movables[0]);
-        } else {
-            state = 'MOVE';
-            if(playersType[turn] === 'cpu') {
-                setTimeout(() => aiMove(movables), 1000);
+        setTimeout(() => {
+            lDice = Math.floor(Math.random() * 6) + 1;
+            d.innerText = lDice;
+            d.classList.remove('rolling');
+            
+            // Check playable pawns
+            let playable = lPawns.filter(p => p.color === lTurn && canMove(p, lDice));
+            
+            if(playable.length === 0) {
+                lState = 'WAIT';
+                setTimeout(nextLudoTurn, 1000);
+            } else if (playable.length === 1 && lHumans > lTurn) {
+                // Auto move single option for human
+                doMove(playable[0]);
             } else {
-                movables.forEach(tk => tk.el.classList.add('highlight'));
-                document.getElementById('status-text').innerText = "Select a token to move";
+                lState = 'MOVE';
+                document.getElementById('l-msg').innerText = "Select a Token";
+                playable.forEach(p => p.el.classList.add('highlight'));
+                
+                if(lTurn >= lHumans) { // CPU
+                    setTimeout(() => {
+                        // CPU Logic: Prioritize Kill > Open > Run
+                        let move = playable.find(p => willKill(p, lDice)) || playable.find(p => p.step === -1) || playable[0];
+                        doMove(move);
+                    }, 800);
+                }
+            }
+        }, 400);
+    }
+
+    function canMove(p, d) {
+        if(p.step === -1) return d === 6; // Open base
+        return (p.step + d) < paths[p.color].length; // Move not exceeding home
+    }
+
+    function movePawn(c, id) {
+        if(lState !== 'MOVE' || c !== lTurn) return;
+        let p = lPawns.find(x => x.color === c && x.id === id);
+        if(canMove(p, lDice)) doMove(p);
+    }
+
+    function doMove(p) {
+        lPawns.forEach(x => x.el.classList.remove('highlight'));
+        
+        if(p.step === -1) p.step = 0; // Exit base
+        else p.step += lDice;
+        
+        // Kill Logic
+        let myPos = paths[p.color][p.step];
+        if(!isSafe(myPos)) {
+            let enemy = lPawns.find(x => x.color !== p.color && x.step !== -1 && paths[x.color][x.step] === myPos);
+            if(enemy) {
+                enemy.step = -1; // Send back to base
+                renderPawn(enemy);
             }
         }
-    }
-
-    function canMove(tk, d) {
-        if(tk.pos === -1) return d === 6;
-        if(tk.pos + d > 56) return false;
-        return true;
-    }
-
-    function tokenClick(tk) {
-        if(state !== 'MOVE' || tk.c !== turn || playersType[turn] !== 'human') return;
-        if(canMove(tk, diceVal)) {
-            doMove(tk);
-        }
-    }
-
-    function doMove(tk) {
-        tokens.forEach(t => t.el.classList.remove('highlight'));
-        if(tk.pos === -1) tk.pos = 0; else tk.pos += diceVal;
         
-        // Kill Check
-        if(tk.pos < 51 && !isSafe(tk.pos)) { 
-            let myCoord = getCoords(tk.pos, tk.c);
-            let others = tokens.filter(t => t.c !== tk.c && t.pos !== -1 && t.pos < 51);
-            others.forEach(o => {
-                let opCoord = getCoords(o.pos, o.c);
-                if(myCoord.r === opCoord.r && myCoord.c === opCoord.c) {
-                    o.pos = -1; // Send home
-                    updateTokenPos(o);
-                }
-            });
-        }
-
-        updateTokenPos(tk);
+        renderPawn(p);
         
-        if(diceVal === 6) {
-            state = 'ROLL';
-            document.getElementById('status-text').innerText = "Rolled 6! Roll again.";
-            if(playersType[turn] === 'cpu') setTimeout(rollDice, 1000);
+        if(lDice === 6) {
+            lState = 'ROLL';
+            document.getElementById('l-msg').innerText = "Rolled 6! Roll Again";
+            if(lTurn >= lHumans) setTimeout(rollDice, 1000);
         } else {
-            state = 'WAIT';
-            setTimeout(nextTurn, 1000);
+            lState = 'WAIT';
+            setTimeout(nextLudoTurn, 800);
         }
     }
 
-    function isSafe(relPos) { return [0,8,13,21,26,34,39,47].includes(relPos); }
-
-    function nextTurn() {
-        turn = (turn + 1) % 4;
-        updateUI();
-        state = 'ROLL';
-        document.getElementById('dice').innerText = "🎲";
-        if(playersType[turn] === 'cpu') setTimeout(rollDice, 1000);
+    function nextLudoTurn() {
+        lTurn = (lTurn + 1) % 4;
+        updateLudoUI();
+        if(lTurn >= lHumans) setTimeout(rollDice, 1000); // CPU Start
     }
 
-    function updateUI() {
+    function updateLudoUI() {
         const names = ["RED", "GREEN", "YELLOW", "BLUE"];
-        const cols = [varColor('--ludo-r'), varColor('--ludo-g'), varColor('--ludo-y'), varColor('--ludo-b')];
-        const el = document.getElementById('turn-text');
-        el.innerText = names[turn] + "'S TURN";
-        el.style.color = cols[turn];
-        document.getElementById('status-text').innerText = playersType[turn] === 'human' ? "Tap Dice to Roll" : "CPU Thinking...";
+        const cols = ["var(--r)", "var(--g)", "var(--y)", "var(--b)"];
+        let txt = document.getElementById('l-turn');
+        txt.innerText = names[lTurn] + "'S TURN";
+        txt.style.color = cols[lTurn];
+        document.getElementById('l-msg').innerText = lTurn < lHumans ? "Tap Dice" : "CPU Rolling...";
+        document.getElementById('dice').innerText = "🎲";
+        lState = 'ROLL';
+    }
+
+    // --- UTILS ---
+    function isSafe(coord) {
+        // Star Coordinates
+        const safes = ["7-2", "9-3", "13-7", "14-9", "9-14", "7-13", "3-9", "2-7"];
+        return safes.includes(coord);
     }
     
-    function varColor(v) { return getComputedStyle(document.documentElement).getPropertyValue(v); }
+    function willKill(p, d) {
+        // CPU Heuristic
+        if(p.step === -1) return false;
+        let futurePos = paths[p.color][p.step + d];
+        if(isSafe(futurePos)) return false;
+        return lPawns.some(x => x.color !== p.color && x.step !== -1 && paths[x.color][x.step] === futurePos);
+    }
 
-    function aiMove(options) {
-        let baseMove = options.find(t => t.pos === -1);
-        if(baseMove && diceVal === 6) { doMove(baseMove); return; }
-        let rand = options[Math.floor(Math.random() * options.length)];
-        doMove(rand);
+    function generatePath(c) {
+        // Hardcoded full paths for each color (Step 0 to Home)
+        // This avoids complex math errors. 
+        // 0=Red, 1=Green, 2=Yellow, 3=Blue
+        const common = [
+            "7-2","7-3","7-4","7-5","7-6","6-7","5-7","4-7","3-7","2-7","1-7","1-8","1-9","2-9","3-9","4-9","5-9","6-9","7-10","7-11","7-12","7-13","7-14","7-15","8-15","9-15","9-14","9-13","9-12","9-11","9-10","10-9","11-9","12-9","13-9","14-9","15-9","15-8","15-7","14-7","13-7","12-7","11-7","10-7","9-7","9-6","9-5","9-4","9-3","9-2","9-1","8-1"
+        ];
+        // Rotate path based on color index (13 steps offset per color)
+        let steps = [];
+        let startIdx = c * 13;
+        for(let i=0; i<51; i++) steps.push(common[(startIdx + i) % 52]);
+        
+        // Append Home Straight
+        const homes = [
+            ["8-2","8-3","8-4","8-5","8-6","8-7"], // Red Home
+            ["2-8","3-8","4-8","5-8","6-8","7-8"], // Green Home
+            ["8-14","8-13","8-12","8-11","8-10","8-9"], // Yellow Home
+            ["14-8","13-8","12-8","11-8","10-8","9-8"]  // Blue Home
+        ];
+        return steps.concat(homes[c]);
     }
 </script>
 </body>
