@@ -15,49 +15,56 @@
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: 0.3s; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); margin: 0; padding: 20px; overflow-x: hidden; }
         
-        /* LOGO STYLES */
-        .logo-container { text-align: center; margin-bottom: 15px; position: relative; }
-        #app-logo { 
-            width: 80px; height: 80px; border-radius: 50%; object-fit: cover; 
-            border: 3px solid var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-            cursor: pointer; background: var(--card); padding: 2px;
-        }
+        /* LOGO & BANNER */
+        .logo-container { text-align: center; margin-bottom: 15px; }
+        #app-logo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); background: var(--card); padding: 2px; }
         #logo-input { display: none; }
-
-        /* G.O.A.T. BANNER */
         .goat-banner { 
             background: linear-gradient(135deg, #000, #333); color: var(--goat);
-            padding: 12px; border-radius: 15px; text-align: center; 
-            font-weight: 800; border: 2px solid var(--goat); margin-bottom: 25px;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-            letter-spacing: 1.5px; animation: glow 2s infinite alternate;
+            padding: 12px; border-radius: 15px; text-align: center; font-weight: 800; 
+            border: 2px solid var(--goat); margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); animation: glow 2s infinite alternate;
         }
         @keyframes glow { from { box-shadow: 0 0 5px var(--goat); } to { box-shadow: 0 0 25px var(--goat); } }
 
-        /* HEADER */
-        .header { margin-bottom: 25px; }
-        .quote-box { background: var(--card); padding: 15px; border-radius: 20px; font-style: italic; font-size: 0.9rem; border-left: 5px solid var(--primary); margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        
-        /* GRID SYSTEM */
+        /* HEADER & GRID */
+        .header h1 { margin: 0; }
+        .quote-box { background: var(--card); padding: 15px; border-radius: 20px; font-style: italic; border-left: 5px solid var(--primary); margin: 15px 0; font-size: 0.9rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .tile { background: var(--card); padding: 20px; border-radius: 24px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.05); cursor: pointer; border: none; font-weight: 600; color: var(--text); position: relative; overflow: hidden; }
+        .tile { background: var(--card); padding: 20px; border-radius: 24px; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.05); cursor: pointer; border: none; font-weight: 600; color: var(--text); position: relative; }
         .tile:active { transform: scale(0.95); }
-        
+
         /* SCREENS */
         .screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); padding: 20px; overflow-y: auto; z-index: 100; }
         .screen.active { display: block; animation: slideUp 0.3s; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .back-btn { color: var(--primary); font-weight: 800; cursor: pointer; margin-bottom: 20px; display: inline-block; font-size: 1.2rem; }
+        input, select { width: 100%; padding: 15px; margin: 5px 0 15px; border-radius: 15px; border: 1px solid #ddd; background: var(--card); color: var(--text); outline: none; }
 
-        /* COMPONENT STYLES */
-        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 15px; border: 1px solid #ddd; background: var(--card); color: var(--text); outline: none; }
+        /* FLIP TIMER */
+        .timer-cards { display: flex; justify-content: center; gap: 10px; margin: 30px 0; }
+        .flip-card { background: #333; color: white; width: 80px; height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
+        .flip-card::after { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(0,0,0,0.5); }
+        .timer-controls { display: flex; gap: 10px; }
+        .anim-flip { animation: flipEffect 0.6s ease; }
+        @keyframes flipEffect { 0% { transform: scaleY(1); } 50% { transform: scaleY(0); } 100% { transform: scaleY(1); } }
+
+        /* CALENDAR */
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+        .cal-day { padding: 10px; border-radius: 10px; background: var(--card); font-size: 0.9rem; }
+        .cal-today { background: var(--secondary); color: white; font-weight: bold; }
+        .cal-head { font-weight: bold; color: var(--primary); padding-bottom: 10px; }
+
+        /* TODO LIST */
+        .day-header { margin-top: 20px; font-weight: 800; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+        .todo-item { background: var(--card); padding: 15px; border-radius: 15px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .todo-item.done span { text-decoration: line-through; opacity: 0.6; }
+
+        /* VAULT & CALC */
+        .vault-item { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .calc-btn { padding: 15px; border-radius: 15px; border: none; background: var(--card); color: var(--text); font-weight: 600; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .op { background: var(--accent); color: #000; }
-        
-        /* VAULT & TODO */
-        .vault-item, .todo-item { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .todo-item.done span { text-decoration: line-through; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -66,43 +73,96 @@
     <div class="logo-container">
         <img id="app-logo" src="https://ui-avatars.com/api/?name=Maaz&background=FF6B6B&color=fff&size=128" onclick="document.getElementById('logo-input').click()">
         <input type="file" id="logo-input" accept="image/*">
-        <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px;">Tap logo to change</div>
     </div>
-
     <div class="goat-banner">🐐 MAAZ IS THE G.O.A.T. 🐐</div>
-    
     <div class="header">
-        <h1 id="greeting" style="margin:0;">Hello, Maaz</h1>
-        <p id="quote" class="quote-box">Fetching wisdom...</p>
+        <h1 id="greeting">Hello, Maaz</h1>
+        <p id="quote" class="quote-box">Loading...</p>
     </div>
 
     <div class="grid">
         <div class="tile" onclick="openScreen('todo')">📝<br>To-Do List</div>
         <div class="tile" onclick="openScreen('calc')">🔢<br>Calculator</div>
-        <div class="tile" onclick="openScreen('timer')">⏱️<br>Focus Timer</div>
-        <div class="tile" onclick="openScreen('vault')">🔐<br>Secret Vault</div>
-        <div class="tile" style="background: linear-gradient(135deg, #1e3c72, #2a5298); color: white;" onclick="window.location.href='games.html'">
-            🎮<br>Gaming Arena
-        </div>
+        <div class="tile" onclick="openScreen('timer')">⏱️<br>Flip Timer</div>
+        <div class="tile" onclick="openScreen('calendar')">📅<br>Calendar</div>
+        <div class="tile" onclick="openScreen('vault')">🔐<br>Vault</div>
+        <div class="tile" style="background: linear-gradient(135deg, #1e3c72, #2a5298); color: white;" onclick="window.location.href='games.html'">🎮<br>Gaming Arena</div>
         <div class="tile" onclick="toggleDark()">🌓<br>Theme</div>
     </div>
 </div>
 
 <div id="timer" class="screen">
     <div class="back-btn" onclick="closeScreen()">← BACK</div>
-    <h2>Custom Timer</h2>
-    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
-        <input type="number" id="th" placeholder="HH" style="width:70px; text-align:center;">
-        <input type="number" id="tm" placeholder="MM" style="width:70px; text-align:center;">
-        <input type="number" id="ts" placeholder="SS" style="width:70px; text-align:center;">
+    <h2>Flip Timer</h2>
+    <div id="timer-setup">
+        <div style="display: flex; gap: 10px;">
+            <input type="number" id="th" placeholder="HH" style="text-align:center;">
+            <input type="number" id="tm" placeholder="MM" style="text-align:center;">
+            <input type="number" id="ts" placeholder="SS" style="text-align:center;">
+        </div>
+        <button class="tile" style="width:100%; background:var(--secondary); color:white;" onclick="initTimer()">Set Timer</button>
     </div>
-    <div id="timer-display" style="font-size: 3.5rem; font-weight: 800; text-align: center; color: var(--secondary); margin-bottom:20px;">00:00:00</div>
-    <button class="tile" style="width:100%; background:var(--secondary); color:white;" onclick="startTimer()">Start Countdown</button>
+    <div id="timer-run" style="display:none; text-align:center;">
+        <div class="timer-cards">
+            <div id="card-h" class="flip-card">00</div>
+            <div id="card-m" class="flip-card">00</div>
+            <div id="card-s" class="flip-card">00</div>
+        </div>
+        <div class="timer-controls">
+            <button class="tile" style="flex:1; background:var(--secondary); color:white;" onclick="resumeTimer()">Start</button>
+            <button class="tile" style="flex:1; background:var(--primary); color:white;" onclick="pauseTimer()">Stop</button>
+        </div>
+        <button class="tile" style="width:100%; margin-top:10px;" onclick="resetTimer()">Reset</button>
+    </div>
+</div>
+
+<div id="calendar" class="screen">
+    <div class="back-btn" onclick="closeScreen()">← BACK</div>
+    <h2 id="cal-month">Month</h2>
+    <div class="cal-grid" id="cal-days"></div>
+</div>
+
+<div id="vault" class="screen">
+    <div class="back-btn" onclick="closeScreen()">← BACK</div>
+    <div id="vault-lock">
+        <h3>Master PIN Required</h3>
+        <input type="password" id="pin-input" placeholder="Enter PIN">
+        <button class="tile" style="width:100%" onclick="unlockVault()">Unlock</button>
+    </div>
+    <div id="vault-content" style="display:none;">
+        <h3>My Secrets</h3>
+        <div id="pass-list"></div>
+        <hr style="margin:20px 0; border:1px dashed #ddd;">
+        <h3>Add Secret</h3>
+        <input type="text" id="pass-label" placeholder="Title">
+        <input type="text" id="pass-val" placeholder="Secret">
+        <button class="tile" style="width:100%; background:var(--secondary); color:white;" onclick="savePass()">Save</button>
+        <hr style="margin:20px 0; border:1px dashed #ddd;">
+        <button class="tile" style="background:#333; color:white;" onclick="changePin()">Change Master PIN</button>
+    </div>
+</div>
+
+<div id="todo" class="screen">
+    <div class="back-btn" onclick="closeScreen()">← BACK</div>
+    <h2>Day Planner</h2>
+    <input type="text" id="todo-input" placeholder="Task details...">
+    <select id="todo-day">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+        <option value="Someday">Someday</option>
+    </select>
+    <button class="tile" style="width:100%; padding:10px;" onclick="addTodo()">+ Add Task</button>
+    <div id="todo-list" style="padding-bottom:50px;"></div>
 </div>
 
 <div id="calc" class="screen">
     <div class="back-btn" onclick="closeScreen()">← BACK</div>
-    <div id="calc-display" style="font-size:2.5rem; text-align:right; margin-bottom:20px; background:var(--card); padding:20px; border-radius:20px; min-height:80px; word-break: break-all;">0</div>
+    <div id="calc-display" style="font-size:2.5rem; text-align:right; margin-bottom:20px; background:var(--card); padding:20px; border-radius:20px; min-height:80px;">0</div>
     <div class="calc-grid">
         <button class="calc-btn op" onclick="cIn('(')">(</button>
         <button class="calc-btn op" onclick="cIn(')')">)</button>
@@ -127,112 +187,121 @@
     </div>
 </div>
 
-<div id="vault" class="screen">
-    <div class="back-btn" onclick="closeScreen()">← BACK</div>
-    <div id="vault-lock">
-        <h3>Master PIN Required</h3>
-        <p style="opacity:0.6; font-size:0.8rem;">Default PIN is 1234</p>
-        <input type="password" id="pin-input" placeholder="Enter PIN">
-        <button class="tile" style="width:100%" onclick="unlockVault()">Unlock</button>
-    </div>
-    <div id="vault-content" style="display:none;">
-        <div id="pass-list"></div>
-        <hr style="margin:20px 0; border:1px dashed #ddd;">
-        <input type="text" id="pass-label" placeholder="Title (e.g. Instagram)">
-        <input type="text" id="pass-val" placeholder="Secret / Password">
-        <button class="tile" style="width:100%; background:var(--secondary); color:white;" onclick="savePass()">Save Secret</button>
-    </div>
-</div>
-
-<div id="todo" class="screen">
-    <div class="back-btn" onclick="closeScreen()">← BACK</div>
-    <h2>Tasks</h2>
-    <div style="display:flex; gap:10px;">
-        <input type="text" id="todo-input" placeholder="Add a new task...">
-        <button class="tile" style="width:auto; padding:0 20px;" onclick="addTodo()">+</button>
-    </div>
-    <div id="todo-list" style="margin-top:20px;"></div>
-</div>
-
 <script>
-    // --- CORE ---
-    function openScreen(id) { document.getElementById(id).classList.add('active'); }
+    // --- CORE & LOGO ---
+    function openScreen(id) { document.getElementById(id).classList.add('active'); if(id==='calendar') renderCal(); }
     function closeScreen() { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); }
     function toggleDark() { document.body.classList.toggle('dark-mode'); localStorage.setItem('maaz_theme', document.body.classList.contains('dark-mode')); }
-    if(localStorage.getItem('maaz_theme') === 'true') document.body.classList.add('dark-mode');
-
-    // --- LOGO UPLOADER ---
+    if(localStorage.getItem('maaz_theme')==='true') document.body.classList.add('dark-mode');
+    
     const logoInput = document.getElementById('logo-input');
     const appLogo = document.getElementById('app-logo');
-    // Load saved logo
-    const savedLogo = localStorage.getItem('maaz_logo');
-    if(savedLogo) appLogo.src = savedLogo;
-    
-    // Save new logo
+    if(localStorage.getItem('maaz_logo')) appLogo.src = localStorage.getItem('maaz_logo');
     logoInput.addEventListener('change', function() {
         const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                appLogo.src = e.target.result;
-                localStorage.setItem('maaz_logo', e.target.result);
-            };
-            reader.readAsDataURL(file);
-        }
+        if (file) { const r = new FileReader(); r.onload = function(e) { appLogo.src = e.target.result; localStorage.setItem('maaz_logo', e.target.result); }; r.readAsDataURL(file); }
     });
 
-    // --- GREETING & QUOTE ---
+    // --- GREETING ---
     const h = new Date().getHours();
-    document.getElementById('greeting').innerText = h < 12 ? "Good Morning, Maaz" : h < 18 ? "Good Afternoon, Maaz" : "Good Evening, Maaz";
-    fetch('https://api.quotable.io/random?maxLength=50').then(r=>r.json()).then(d=>{document.getElementById('quote').innerText=`"${d.content}"`}).catch(()=>{document.getElementById('quote').innerText="Push yourself, because no one else is going to do it for you."});
+    document.getElementById('greeting').innerText = h<12?"Good Morning, Maaz":h<18?"Good Afternoon, Maaz":"Good Evening, Maaz";
+    fetch('https://api.quotable.io/random?maxLength=50').then(r=>r.json()).then(d=>document.getElementById('quote').innerText=`"${d.content}"`).catch(()=>{document.getElementById('quote').innerText="Push yourself!"});
 
-    // --- TIMER ---
-    let tInt;
-    function startTimer() {
-        clearInterval(tInt);
+    // --- FLIP TIMER (START/STOP) ---
+    let tTime = 0, tInterval, tRunning = false;
+    function initTimer() {
         let hh = parseInt(document.getElementById('th').value)||0, mm = parseInt(document.getElementById('tm').value)||0, ss = parseInt(document.getElementById('ts').value)||0;
-        let total = (hh*3600)+(mm*60)+ss;
-        if(total > 64800) { alert("Max limit is 18 Hours!"); return; }
-        tInt = setInterval(() => {
-            if(total <= 0) { clearInterval(tInt); alert("Time's Up!"); return; }
-            total--;
-            let h = Math.floor(total/3600), m = Math.floor((total%3600)/60), s = total%60;
-            document.getElementById('timer-display').innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        tTime = (hh*3600)+(mm*60)+ss;
+        if(tTime>0) { document.getElementById('timer-setup').style.display='none'; document.getElementById('timer-run').style.display='block'; updateCards(); }
+    }
+    function resumeTimer() {
+        if(tRunning) return;
+        tRunning = true;
+        tInterval = setInterval(() => {
+            if(tTime<=0) { pauseTimer(); alert("Time's Up!"); return; }
+            tTime--; updateCards();
         }, 1000);
     }
+    function pauseTimer() { clearInterval(tInterval); tRunning = false; }
+    function resetTimer() { pauseTimer(); document.getElementById('timer-run').style.display='none'; document.getElementById('timer-setup').style.display='block'; }
+    function updateCards() {
+        let h = Math.floor(tTime/3600), m = Math.floor((tTime%3600)/60), s = tTime%60;
+        setCard('card-h', String(h).padStart(2,'0'));
+        setCard('card-m', String(m).padStart(2,'0'));
+        setCard('card-s', String(s).padStart(2,'0'));
+    }
+    function setCard(id, val) {
+        let el = document.getElementById(id);
+        if(el.innerText !== val) { el.innerText = val; el.classList.remove('anim-flip'); void el.offsetWidth; el.classList.add('anim-flip'); }
+    }
+
+    // --- CALENDAR ---
+    function renderCal() {
+        const date = new Date();
+        const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+        document.getElementById('cal-month').innerText = monthNames[date.getMonth()] + " " + date.getFullYear();
+        const daysContainer = document.getElementById('cal-days');
+        daysContainer.innerHTML = `<div class="cal-head">S</div><div class="cal-head">M</div><div class="cal-head">T</div><div class="cal-head">W</div><div class="cal-head">T</div><div class="cal-head">F</div><div class="cal-head">S</div>`;
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        for(let i=0; i<firstDay; i++) daysContainer.innerHTML += `<div></div>`;
+        for(let i=1; i<=daysInMonth; i++) {
+            let isToday = i === date.getDate() ? "cal-today" : "";
+            daysContainer.innerHTML += `<div class="cal-day ${isToday}">${i}</div>`;
+        }
+    }
+
+    // --- VAULT (CHANGE PIN) ---
+    let secrets = JSON.parse(localStorage.getItem('maaz_secrets')) || [];
+    function unlockVault() {
+        let userPin = localStorage.getItem('maaz_pin') || "1234";
+        if(document.getElementById('pin-input').value === userPin) {
+            document.getElementById('vault-lock').style.display='none'; document.getElementById('vault-content').style.display='block'; renderPass();
+        } else alert("Wrong PIN!");
+    }
+    function changePin() {
+        let newPin = prompt("Enter new PIN:");
+        if(newPin && newPin.length >= 4) { localStorage.setItem('maaz_pin', newPin); alert("PIN Updated!"); }
+        else { alert("PIN must be at least 4 digits"); }
+    }
+    function savePass() {
+        let l = document.getElementById('pass-label').value, v = document.getElementById('pass-val').value;
+        if(l && v) { secrets.push({l,v}); localStorage.setItem('maaz_secrets', JSON.stringify(secrets)); renderPass(); document.getElementById('pass-label').value=''; document.getElementById('pass-val').value=''; }
+    }
+    function renderPass() { document.getElementById('pass-list').innerHTML = secrets.map((s,i) => `<div class="vault-item"><div><b>${s.l}</b><br><small>${s.v}</small></div><button onclick="delPass(${i})" style="color:red; bg:none; border:none;">✕</button></div>`).join(''); }
+    function delPass(i) { secrets.splice(i,1); localStorage.setItem('maaz_secrets', JSON.stringify(secrets)); renderPass(); }
+
+    // --- TODO (DAY BASED) ---
+    let todos = JSON.parse(localStorage.getItem('maaz_todo_v2')) || [];
+    function addTodo() {
+        let val = document.getElementById('todo-input').value;
+        let day = document.getElementById('todo-day').value;
+        if(val) { todos.push({text: val, day: day, done: false}); localStorage.setItem('maaz_todo_v2', JSON.stringify(todos)); renderTodo(); document.getElementById('todo-input').value=''; }
+    }
+    function renderTodo() {
+        const list = document.getElementById('todo-list'); list.innerHTML = '';
+        const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Someday"];
+        days.forEach(d => {
+            const dayTasks = todos.filter(t => t.day === d);
+            if(dayTasks.length > 0) {
+                list.innerHTML += `<div class="day-header">${d}</div>`;
+                dayTasks.forEach(t => {
+                    // find index in main array
+                    let idx = todos.indexOf(t);
+                    list.innerHTML += `<div class="todo-item ${t.done?'done':''}" onclick="toggleTodo(${idx})"><span>${t.text}</span><button onclick="event.stopPropagation(); delTodo(${idx})" style="color:red; bg:none; border:none;">✕</button></div>`;
+                });
+            }
+        });
+    }
+    function toggleTodo(i) { todos[i].done = !todos[i].done; if(todos[i].done) confetti(); localStorage.setItem('maaz_todo_v2', JSON.stringify(todos)); renderTodo(); }
+    function delTodo(i) { todos.splice(i,1); localStorage.setItem('maaz_todo_v2', JSON.stringify(todos)); renderTodo(); }
+    renderTodo();
 
     // --- CALCULATOR ---
     let cx = "";
     function cIn(v) { cx += v; document.getElementById('calc-display').innerText = cx; }
     function cClr() { cx = ""; document.getElementById('calc-display').innerText = "0"; }
     function cRes() { try { document.getElementById('calc-display').innerText = eval(cx.replace('π', Math.PI)); cx = eval(cx.replace('π', Math.PI)).toString(); } catch { document.getElementById('calc-display').innerText = "Error"; cx=""; } }
-
-    // --- VAULT ---
-    let secrets = JSON.parse(localStorage.getItem('maaz_secrets')) || [];
-    function unlockVault() {
-        if(document.getElementById('pin-input').value === "1234") {
-            document.getElementById('vault-lock').style.display='none'; document.getElementById('vault-content').style.display='block'; renderPass();
-        } else alert("Wrong PIN!");
-    }
-    function savePass() {
-        let l = document.getElementById('pass-label').value, v = document.getElementById('pass-val').value;
-        if(l && v) { secrets.push({l,v}); localStorage.setItem('maaz_secrets', JSON.stringify(secrets)); renderPass(); document.getElementById('pass-label').value=''; document.getElementById('pass-val').value=''; }
-    }
-    function renderPass() { document.getElementById('pass-list').innerHTML = secrets.map((s,i) => `<div class="vault-item"><div><b>${s.l}</b><br><small>${s.v}</small></div><button onclick="delPass(${i})" style="color:red; background:none; border:none;">✕</button></div>`).join(''); }
-    function delPass(i) { secrets.splice(i,1); localStorage.setItem('maaz_secrets', JSON.stringify(secrets)); renderPass(); }
-
-    // --- TODO ---
-    let todos = JSON.parse(localStorage.getItem('maaz_todo')) || [];
-    function addTodo() {
-        let val = document.getElementById('todo-input').value;
-        if(val) { todos.push({text: val, done: false}); localStorage.setItem('maaz_todo', JSON.stringify(todos)); renderTodo(); document.getElementById('todo-input').value=''; }
-    }
-    function renderTodo() {
-        document.getElementById('todo-list').innerHTML = todos.map((t,i) => `<div class="todo-item ${t.done?'done':''}" onclick="toggleTodo(${i})"><span>${t.text}</span><button onclick="event.stopPropagation(); delTodo(${i})" style="color:red; bg:none; border:none;">✕</button></div>`).join('');
-    }
-    function toggleTodo(i) { todos[i].done = !todos[i].done; if(todos[i].done) confetti(); localStorage.setItem('maaz_todo', JSON.stringify(todos)); renderTodo(); }
-    function delTodo(i) { todos.splice(i,1); localStorage.setItem('maaz_todo', JSON.stringify(todos)); renderTodo(); }
-    renderTodo();
 </script>
 </body>
 </html>
