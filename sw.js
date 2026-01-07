@@ -1,7 +1,6 @@
-const CACHE_NAME = "maaz-elite-v102"; // Version 102 forces a fresh update
+const CACHE_NAME = "maaz-elite-v103"; // Version 103 forces a fresh start
 
-// We only cache the main pages first. This prevents the install from crashing 
-// if an image name is slightly wrong.
+// We only cache the main pages. We do NOT cache the image because it is a live link.
 const assets = [
   "/",
   "/index.html",
@@ -9,9 +8,8 @@ const assets = [
   "/manifest.json"
 ];
 
-// 1. Install Event: Caches the core files
 self.addEventListener("install", (e) => {
-    self.skipWaiting(); // Forces this new Service Worker to take over immediately
+    self.skipWaiting(); // Force activation immediately
     e.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
             return cache.addAll(assets);
@@ -19,7 +17,6 @@ self.addEventListener("install", (e) => {
     );
 });
 
-// 2. Activate Event: Cleans up old versions and takes control
 self.addEventListener("activate", (e) => {
     e.waitUntil(
         caches.keys().then((keys) => {
@@ -28,14 +25,12 @@ self.addEventListener("activate", (e) => {
                     if (key !== CACHE_NAME) return caches.delete(key);
                 })
             );
-        }).then(() => self.clients.claim()) // Tells the browser "I'm the boss now"
+        }).then(() => self.clients.claim())
     );
 });
 
-// 3. Fetch Event: Tries to get live files, falls back to cache if offline
 self.addEventListener("fetch", (e) => {
     e.respondWith(
-        fetch(e.request)
-            .catch(() => caches.match(e.request))
+        fetch(e.request).catch(() => caches.match(e.request))
     );
 });
