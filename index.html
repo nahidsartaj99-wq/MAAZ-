@@ -10,6 +10,7 @@
         :root {
             --primary: #FF6B6B; --secondary: #4D96FF; --accent: #FFD93D;
             --bg: #f8f9fa; --card: #ffffff; --text: #2d3436; --goat: #FFD700;
+            --good: #00b894; --bad: #d63031; --mod: #fdcb6e;
         }
         .dark-mode { --bg: #121212; --card: #1e1e1e; --text: #ffffff; }
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: 0.3s; -webkit-tap-highlight-color: transparent; }
@@ -27,7 +28,7 @@
         }
         @keyframes glow { from { box-shadow: 0 0 5px var(--goat); } to { box-shadow: 0 0 25px var(--goat); } }
 
-        /* HEADER & GRID */
+        /* GRID & TILES */
         .header h1 { margin: 0; }
         .quote-box { background: var(--card); padding: 15px; border-radius: 20px; font-style: italic; border-left: 5px solid var(--primary); margin: 15px 0; font-size: 0.9rem; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -41,30 +42,40 @@
         .back-btn { color: var(--primary); font-weight: 800; cursor: pointer; margin-bottom: 20px; display: inline-block; font-size: 1.2rem; }
         input, select { width: 100%; padding: 15px; margin: 5px 0 15px; border-radius: 15px; border: 1px solid #ddd; background: var(--card); color: var(--text); outline: none; }
 
-        /* FLIP TIMER */
-        .timer-cards { display: flex; justify-content: center; gap: 10px; margin: 30px 0; }
-        .flip-card { background: #333; color: white; width: 80px; height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
-        .flip-card::after { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(0,0,0,0.5); }
-        .timer-controls { display: flex; gap: 10px; }
-        .anim-flip { animation: flipEffect 0.6s ease; }
-        @keyframes flipEffect { 0% { transform: scaleY(1); } 50% { transform: scaleY(0); } 100% { transform: scaleY(1); } }
-
-        /* CALENDAR */
+        /* CALENDAR NAV */
+        .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cal-nav button { background: var(--card); border: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; padding: 5px 15px; border-radius: 10px; }
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
         .cal-day { padding: 10px; border-radius: 10px; background: var(--card); font-size: 0.9rem; }
         .cal-today { background: var(--secondary); color: white; font-weight: bold; }
         .cal-head { font-weight: bold; color: var(--primary); padding-bottom: 10px; }
 
-        /* TODO LIST */
-        .day-header { margin-top: 20px; font-weight: 800; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
-        .todo-item { background: var(--card); padding: 15px; border-radius: 15px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .todo-item.done span { text-decoration: line-through; opacity: 0.6; }
-
-        /* VAULT & CALC */
-        .vault-item { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd; }
+        /* CALCULATOR */
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .calc-btn { padding: 15px; border-radius: 15px; border: none; background: var(--card); color: var(--text); font-weight: 600; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .op { background: var(--accent); color: #000; }
+        .del-btn { background: #FF6B6B; color: white; } 
+
+        /* WEATHER & AQI */
+        .weather-now { text-align: center; margin-bottom: 20px; }
+        .weather-temp { font-size: 4rem; font-weight: 800; color: var(--text); }
+        .weather-graph { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 20px; align-items: flex-end; height: 150px; }
+        .bar-container { min-width: 40px; text-align: center; font-size: 0.7rem; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+        .bar { width: 100%; background: linear-gradient(to top, var(--secondary), var(--primary)); border-radius: 5px 5px 0 0; min-height: 10px; }
+        
+        .aqi-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .aqi-card { background: var(--card); padding: 15px 5px; border-radius: 15px; text-align: center; border: 1px solid #ddd; }
+        .aqi-val { font-size: 1.5rem; font-weight: 800; display: block; }
+        .aqi-label { font-size: 0.8rem; opacity: 0.7; }
+
+        /* TIMER & OTHERS */
+        .timer-cards { display: flex; justify-content: center; gap: 10px; margin: 30px 0; }
+        .flip-card { background: #333; color: white; width: 80px; height: 100px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
+        .flip-card::after { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: rgba(0,0,0,0.5); }
+        .anim-flip { animation: flipEffect 0.6s ease; }
+        @keyframes flipEffect { 0% { transform: scaleY(1); } 50% { transform: scaleY(0); } 100% { transform: scaleY(1); } }
+        .day-header { margin-top: 20px; font-weight: 800; color: var(--secondary); text-transform: uppercase; border-bottom: 2px solid #ddd; }
+        .todo-item, .vault-item { background: var(--card); padding: 15px; border-radius: 15px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
@@ -85,9 +96,81 @@
         <div class="tile" onclick="openScreen('calc')">🔢<br>Calculator</div>
         <div class="tile" onclick="openScreen('timer')">⏱️<br>Flip Timer</div>
         <div class="tile" onclick="openScreen('calendar')">📅<br>Calendar</div>
+        <div class="tile" onclick="openScreen('weather')">🌦️<br>Weather & AQI</div>
         <div class="tile" onclick="openScreen('vault')">🔐<br>Vault</div>
         <div class="tile" style="background: linear-gradient(135deg, #1e3c72, #2a5298); color: white;" onclick="window.location.href='games.html'">🎮<br>Gaming Arena</div>
         <div class="tile" onclick="toggleDark()">🌓<br>Theme</div>
+    </div>
+</div>
+
+<div id="weather" class="screen">
+    <div class="back-btn" onclick="closeScreen()">← BACK</div>
+    <div id="weather-content">
+        <h3 style="text-align: center; margin: 0 0 20px 0; color: var(--secondary);">Ghaziabad, UP, India</h3>
+        
+        <div class="weather-now">
+            <div class="weather-temp" id="w-temp">--°</div>
+            <div id="w-desc">Fetching Live Data...</div>
+        </div>
+
+        <h4>Next 24 Hours</h4>
+        <div class="weather-graph" id="w-graph"></div>
+
+        <hr style="margin: 20px 0; opacity: 0.3;">
+        <h4>Air Quality Index (AQI)</h4>
+        <div class="aqi-grid">
+            <div class="aqi-card">
+                <span class="aqi-val" id="val-aqi">--</span>
+                <span class="aqi-label">AQI</span>
+            </div>
+            <div class="aqi-card">
+                <span class="aqi-val" id="val-pm25">--</span>
+                <span class="aqi-label">PM 2.5</span>
+            </div>
+            <div class="aqi-card">
+                <span class="aqi-val" id="val-pm10">--</span>
+                <span class="aqi-label">PM 10</span>
+            </div>
+        </div>
+        <p style="font-size: 0.8rem; text-align: center; opacity: 0.6; margin-top: 10px;">Source: Open-Meteo • Ghaziabad Station</p>
+    </div>
+</div>
+
+<div id="calendar" class="screen">
+    <div class="back-btn" onclick="closeScreen()">← BACK</div>
+    <div class="cal-nav">
+        <button onclick="changeMonth(-1)">&#10094;</button>
+        <h2 id="cal-month" style="margin:0">Month</h2>
+        <button onclick="changeMonth(1)">&#10095;</button>
+    </div>
+    <div class="cal-grid" id="cal-days"></div>
+</div>
+
+<div id="calc" class="screen">
+    <div class="back-btn" onclick="closeScreen()">← BACK</div>
+    <div id="calc-display" style="font-size:2.5rem; text-align:right; margin-bottom:20px; background:var(--card); padding:20px; border-radius:20px; min-height:80px; word-break: break-all;">0</div>
+    <div class="calc-grid">
+        <button class="calc-btn op" onclick="cIn('(')">(</button>
+        <button class="calc-btn op" onclick="cIn(')')">)</button>
+        <button class="calc-btn op" onclick="cIn('√')">√</button>
+        <button class="calc-btn op" onclick="cIn('π')">π</button>
+        <button class="calc-btn" onclick="cIn('7')">7</button>
+        <button class="calc-btn" onclick="cIn('8')">8</button>
+        <button class="calc-btn" onclick="cIn('9')">9</button>
+        <button class="calc-btn op" onclick="cIn('/')">÷</button>
+        <button class="calc-btn" onclick="cIn('4')">4</button>
+        <button class="calc-btn" onclick="cIn('5')">5</button>
+        <button class="calc-btn" onclick="cIn('6')">6</button>
+        <button class="calc-btn op" onclick="cIn('*')">×</button>
+        <button class="calc-btn" onclick="cIn('1')">1</button>
+        <button class="calc-btn" onclick="cIn('2')">2</button>
+        <button class="calc-btn" onclick="cIn('3')">3</button>
+        <button class="calc-btn op" onclick="cIn('-')">-</button>
+        <button class="calc-btn" onclick="cClr()" style="color:red">C</button>
+        <button class="calc-btn" onclick="cIn('0')">0</button>
+        <button class="calc-btn del-btn" onclick="cDel()">⌫</button>
+        <button class="calc-btn op" onclick="cIn('+')">+</button>
+        <button class="calc-btn" onclick="cRes()" style="background:var(--secondary); color:white; grid-column: span 4;">=</button>
     </div>
 </div>
 
@@ -104,41 +187,18 @@
     </div>
     <div id="timer-run" style="display:none; text-align:center;">
         <div class="timer-cards">
-            <div id="card-h" class="flip-card">00</div>
-            <div id="card-m" class="flip-card">00</div>
-            <div id="card-s" class="flip-card">00</div>
+            <div id="card-h" class="flip-card">00</div><div id="card-m" class="flip-card">00</div><div id="card-s" class="flip-card">00</div>
         </div>
-        <div class="timer-controls">
-            <button class="tile" style="flex:1; background:var(--secondary); color:white;" onclick="resumeTimer()">Start</button>
-            <button class="tile" style="flex:1; background:var(--primary); color:white;" onclick="pauseTimer()">Stop</button>
-        </div>
+        <div style="display:flex; gap:10px;"><button class="tile" style="flex:1" onclick="resumeTimer()">Start</button><button class="tile" style="flex:1" onclick="pauseTimer()">Stop</button></div>
         <button class="tile" style="width:100%; margin-top:10px;" onclick="resetTimer()">Reset</button>
     </div>
 </div>
 
-<div id="calendar" class="screen">
-    <div class="back-btn" onclick="closeScreen()">← BACK</div>
-    <h2 id="cal-month">Month</h2>
-    <div class="cal-grid" id="cal-days"></div>
-</div>
-
 <div id="vault" class="screen">
     <div class="back-btn" onclick="closeScreen()">← BACK</div>
-    <div id="vault-lock">
-        <h3>Master PIN Required</h3>
-        <input type="password" id="pin-input" placeholder="Enter PIN">
-        <button class="tile" style="width:100%" onclick="unlockVault()">Unlock</button>
-    </div>
+    <div id="vault-lock"><h3>Enter PIN</h3><input type="password" id="pin-input" placeholder="PIN"><button class="tile" style="width:100%" onclick="unlockVault()">Unlock</button></div>
     <div id="vault-content" style="display:none;">
-        <h3>My Secrets</h3>
-        <div id="pass-list"></div>
-        <hr style="margin:20px 0; border:1px dashed #ddd;">
-        <h3>Add Secret</h3>
-        <input type="text" id="pass-label" placeholder="Title">
-        <input type="text" id="pass-val" placeholder="Secret">
-        <button class="tile" style="width:100%; background:var(--secondary); color:white;" onclick="savePass()">Save</button>
-        <hr style="margin:20px 0; border:1px dashed #ddd;">
-        <button class="tile" style="background:#333; color:white;" onclick="changePin()">Change Master PIN</button>
+        <div id="pass-list"></div><hr><input type="text" id="pass-label" placeholder="Title"><input type="text" id="pass-val" placeholder="Secret"><button class="tile" style="width:100%; background:var(--secondary); color:white;" onclick="savePass()">Save</button><hr><button class="tile" style="background:#333; color:white;" onclick="changePin()">Change PIN</button>
     </div>
 </div>
 
@@ -146,162 +206,123 @@
     <div class="back-btn" onclick="closeScreen()">← BACK</div>
     <h2>Day Planner</h2>
     <input type="text" id="todo-input" placeholder="Task details...">
-    <select id="todo-day">
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-        <option value="Sunday">Sunday</option>
-        <option value="Someday">Someday</option>
-    </select>
+    <select id="todo-day"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option><option value="Someday">Someday</option></select>
     <button class="tile" style="width:100%; padding:10px;" onclick="addTodo()">+ Add Task</button>
     <div id="todo-list" style="padding-bottom:50px;"></div>
 </div>
 
-<div id="calc" class="screen">
-    <div class="back-btn" onclick="closeScreen()">← BACK</div>
-    <div id="calc-display" style="font-size:2.5rem; text-align:right; margin-bottom:20px; background:var(--card); padding:20px; border-radius:20px; min-height:80px;">0</div>
-    <div class="calc-grid">
-        <button class="calc-btn op" onclick="cIn('(')">(</button>
-        <button class="calc-btn op" onclick="cIn(')')">)</button>
-        <button class="calc-btn op" onclick="cIn('Math.sqrt(')">√</button>
-        <button class="calc-btn op" onclick="cIn('Math.PI')">π</button>
-        <button class="calc-btn" onclick="cIn('7')">7</button>
-        <button class="calc-btn" onclick="cIn('8')">8</button>
-        <button class="calc-btn" onclick="cIn('9')">9</button>
-        <button class="calc-btn op" onclick="cIn('/')">÷</button>
-        <button class="calc-btn" onclick="cIn('4')">4</button>
-        <button class="calc-btn" onclick="cIn('5')">5</button>
-        <button class="calc-btn" onclick="cIn('6')">6</button>
-        <button class="calc-btn op" onclick="cIn('*')">×</button>
-        <button class="calc-btn" onclick="cIn('1')">1</button>
-        <button class="calc-btn" onclick="cIn('2')">2</button>
-        <button class="calc-btn" onclick="cIn('3')">3</button>
-        <button class="calc-btn op" onclick="cIn('-')">-</button>
-        <button class="calc-btn" onclick="cClr()" style="background:var(--primary); color:white;">C</button>
-        <button class="calc-btn" onclick="cIn('0')">0</button>
-        <button class="calc-btn" onclick="cRes()" style="background:var(--secondary); color:white;">=</button>
-        <button class="calc-btn op" onclick="cIn('+')">+</button>
-    </div>
-</div>
-
 <script>
-    // --- CORE & LOGO ---
-    function openScreen(id) { document.getElementById(id).classList.add('active'); if(id==='calendar') renderCal(); }
+    // --- CORE ---
+    function openScreen(id) { document.getElementById(id).classList.add('active'); if(id==='calendar') renderCal(); if(id==='weather') getWeather(); }
     function closeScreen() { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); }
     function toggleDark() { document.body.classList.toggle('dark-mode'); localStorage.setItem('maaz_theme', document.body.classList.contains('dark-mode')); }
     if(localStorage.getItem('maaz_theme')==='true') document.body.classList.add('dark-mode');
     
-    const logoInput = document.getElementById('logo-input');
+    // --- LOGO & QUOTE ---
     const appLogo = document.getElementById('app-logo');
     if(localStorage.getItem('maaz_logo')) appLogo.src = localStorage.getItem('maaz_logo');
-    logoInput.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) { const r = new FileReader(); r.onload = function(e) { appLogo.src = e.target.result; localStorage.setItem('maaz_logo', e.target.result); }; r.readAsDataURL(file); }
-    });
-
-    // --- GREETING ---
-    const h = new Date().getHours();
-    document.getElementById('greeting').innerText = h<12?"Good Morning, Maaz":h<18?"Good Afternoon, Maaz":"Good Evening, Maaz";
+    document.getElementById('logo-input').addEventListener('change', function() { const r = new FileReader(); r.onload = function(e) { appLogo.src = e.target.result; localStorage.setItem('maaz_logo', e.target.result); }; r.readAsDataURL(this.files[0]); });
+    const h = new Date().getHours(); document.getElementById('greeting').innerText = h<12?"Good Morning, Maaz":h<18?"Good Afternoon, Maaz":"Good Evening, Maaz";
     fetch('https://api.quotable.io/random?maxLength=50').then(r=>r.json()).then(d=>document.getElementById('quote').innerText=`"${d.content}"`).catch(()=>{document.getElementById('quote').innerText="Push yourself!"});
 
-    // --- FLIP TIMER (START/STOP) ---
-    let tTime = 0, tInterval, tRunning = false;
-    function initTimer() {
-        let hh = parseInt(document.getElementById('th').value)||0, mm = parseInt(document.getElementById('tm').value)||0, ss = parseInt(document.getElementById('ts').value)||0;
-        tTime = (hh*3600)+(mm*60)+ss;
-        if(tTime>0) { document.getElementById('timer-setup').style.display='none'; document.getElementById('timer-run').style.display='block'; updateCards(); }
+    // --- CALCULATOR (FIXED) ---
+    let cx = "";
+    function cIn(v) { cx += v; document.getElementById('calc-display').innerText = cx; }
+    function cClr() { cx = ""; document.getElementById('calc-display').innerText = "0"; }
+    function cDel() { cx = cx.slice(0, -1); document.getElementById('calc-display').innerText = cx || "0"; }
+    function cRes() { try { let evalStr = cx.replace(/π/g, '3.14').replace(/√/g, 'Math.sqrt'); let res = eval(evalStr); document.getElementById('calc-display').innerText = Number.isInteger(res) ? res : res.toFixed(4); cx = res.toString(); } catch { document.getElementById('calc-display').innerText = "Error"; cx=""; } }
+
+    // --- WEATHER & AQI (GHAZIABAD HARDCODED) ---
+    async function getWeather() {
+        // Ghaziabad Coordinates
+        const lat = 28.6692;
+        const lon = 77.4538;
+        
+        try {
+            // 1. Fetch Weather
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&hourly=temperature_2m&forecast_days=2&timezone=Asia%2FKolkata`);
+            const weatherData = await weatherRes.json();
+            
+            // 2. Fetch AQI (Pollutants)
+            const aqiRes = await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi,pm10,pm2_5&timezone=Asia%2FKolkata`);
+            const aqiData = await aqiRes.json();
+
+            // Render Weather
+            document.getElementById('w-temp').innerText = `${weatherData.current.temperature_2m}°C`;
+            document.getElementById('w-desc').innerText = "Ghaziabad Live";
+            
+            // Render Graph
+            const container = document.getElementById('w-graph'); container.innerHTML = '';
+            const hours = weatherData.hourly.time.slice(0, 24);
+            const temps = weatherData.hourly.temperature_2m.slice(0, 24);
+            const maxTemp = Math.max(...temps) + 5;
+            hours.forEach((time, i) => {
+                const t = temps[i]; const date = new Date(time);
+                const hStr = date.getHours() + ":00";
+                const height = (t / maxTemp) * 100;
+                container.innerHTML += `<div class="bar-container"><div class="bar-label">${Math.round(t)}°</div><div class="bar" style="height:${height}%"></div><div class="bar-time">${hStr}</div></div>`;
+            });
+
+            // Render AQI & PM
+            const aqi = aqiData.current.us_aqi;
+            const pm25 = aqiData.current.pm2_5;
+            const pm10 = aqiData.current.pm10;
+            
+            document.getElementById('val-aqi').innerText = aqi;
+            document.getElementById('val-aqi').style.color = getAqiColor(aqi);
+            document.getElementById('val-pm25').innerText = pm25;
+            document.getElementById('val-pm10').innerText = pm10;
+
+        } catch (e) { document.getElementById('w-desc').innerText = "Failed to load data."; console.log(e); }
     }
-    function resumeTimer() {
-        if(tRunning) return;
-        tRunning = true;
-        tInterval = setInterval(() => {
-            if(tTime<=0) { pauseTimer(); alert("Time's Up!"); return; }
-            tTime--; updateCards();
-        }, 1000);
-    }
-    function pauseTimer() { clearInterval(tInterval); tRunning = false; }
-    function resetTimer() { pauseTimer(); document.getElementById('timer-run').style.display='none'; document.getElementById('timer-setup').style.display='block'; }
-    function updateCards() {
-        let h = Math.floor(tTime/3600), m = Math.floor((tTime%3600)/60), s = tTime%60;
-        setCard('card-h', String(h).padStart(2,'0'));
-        setCard('card-m', String(m).padStart(2,'0'));
-        setCard('card-s', String(s).padStart(2,'0'));
-    }
-    function setCard(id, val) {
-        let el = document.getElementById(id);
-        if(el.innerText !== val) { el.innerText = val; el.classList.remove('anim-flip'); void el.offsetWidth; el.classList.add('anim-flip'); }
+
+    function getAqiColor(val) {
+        if(val <= 50) return "#00b894"; // Good
+        if(val <= 100) return "#fdcb6e"; // Moderate
+        if(val <= 150) return "#e17055"; // Unhealthy for Sensitive
+        return "#d63031"; // Unhealthy
     }
 
     // --- CALENDAR ---
+    let calDate = new Date();
+    function changeMonth(dir) { calDate.setMonth(calDate.getMonth() + dir); renderCal(); }
     function renderCal() {
-        const date = new Date();
         const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-        document.getElementById('cal-month').innerText = monthNames[date.getMonth()] + " " + date.getFullYear();
+        document.getElementById('cal-month').innerText = monthNames[calDate.getMonth()] + " " + calDate.getFullYear();
         const daysContainer = document.getElementById('cal-days');
         daysContainer.innerHTML = `<div class="cal-head">S</div><div class="cal-head">M</div><div class="cal-head">T</div><div class="cal-head">W</div><div class="cal-head">T</div><div class="cal-head">F</div><div class="cal-head">S</div>`;
-        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-        const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        const firstDay = new Date(calDate.getFullYear(), calDate.getMonth(), 1).getDay();
+        const daysInMonth = new Date(calDate.getFullYear(), calDate.getMonth() + 1, 0).getDate();
+        const today = new Date();
         for(let i=0; i<firstDay; i++) daysContainer.innerHTML += `<div></div>`;
         for(let i=1; i<=daysInMonth; i++) {
-            let isToday = i === date.getDate() ? "cal-today" : "";
+            let isToday = (i===today.getDate() && calDate.getMonth()===today.getMonth() && calDate.getFullYear()===today.getFullYear()) ? "cal-today" : "";
             daysContainer.innerHTML += `<div class="cal-day ${isToday}">${i}</div>`;
         }
     }
 
-    // --- VAULT (CHANGE PIN) ---
+    // --- TIMER, VAULT, TODO ---
+    let tTime = 0, tInterval, tRunning = false;
+    function initTimer() { let hh = parseInt(document.getElementById('th').value)||0, mm = parseInt(document.getElementById('tm').value)||0, ss = parseInt(document.getElementById('ts').value)||0; tTime = (hh*3600)+(mm*60)+ss; if(tTime>0) { document.getElementById('timer-setup').style.display='none'; document.getElementById('timer-run').style.display='block'; updateCards(); } }
+    function resumeTimer() { if(tRunning) return; tRunning = true;tInterval = setInterval(() => { if(tTime<=0) { pauseTimer(); alert("Time's Up!"); return; } tTime--; updateCards(); }, 1000); }
+    function pauseTimer() { clearInterval(tInterval); tRunning = false; }
+    function resetTimer() { pauseTimer(); document.getElementById('timer-run').style.display='none'; document.getElementById('timer-setup').style.display='block'; }
+    function updateCards() { let h = Math.floor(tTime/3600), m = Math.floor((tTime%3600)/60), s = tTime%60; setCard('card-h', String(h).padStart(2,'0')); setCard('card-m', String(m).padStart(2,'0')); setCard('card-s', String(s).padStart(2,'0')); }
+    function setCard(id, val) { let el = document.getElementById(id); if(el.innerText !== val) { el.innerText = val; el.classList.remove('anim-flip'); void el.offsetWidth; el.classList.add('anim-flip'); } }
+
     let secrets = JSON.parse(localStorage.getItem('maaz_secrets')) || [];
-    function unlockVault() {
-        let userPin = localStorage.getItem('maaz_pin') || "1234";
-        if(document.getElementById('pin-input').value === userPin) {
-            document.getElementById('vault-lock').style.display='none'; document.getElementById('vault-content').style.display='block'; renderPass();
-        } else alert("Wrong PIN!");
-    }
-    function changePin() {
-        let newPin = prompt("Enter new PIN:");
-        if(newPin && newPin.length >= 4) { localStorage.setItem('maaz_pin', newPin); alert("PIN Updated!"); }
-        else { alert("PIN must be at least 4 digits"); }
-    }
-    function savePass() {
-        let l = document.getElementById('pass-label').value, v = document.getElementById('pass-val').value;
-        if(l && v) { secrets.push({l,v}); localStorage.setItem('maaz_secrets', JSON.stringify(secrets)); renderPass(); document.getElementById('pass-label').value=''; document.getElementById('pass-val').value=''; }
-    }
+    function unlockVault() { let p = localStorage.getItem('maaz_pin') || "1234"; if(document.getElementById('pin-input').value === p) { document.getElementById('vault-lock').style.display='none'; document.getElementById('vault-content').style.display='block'; renderPass(); } else alert("Wrong PIN!"); }
+    function changePin() { let n = prompt("New PIN:"); if(n&&n.length>=4) { localStorage.setItem('maaz_pin', n); alert("PIN Updated!"); } }
+    function savePass() { let l = document.getElementById('pass-label').value, v = document.getElementById('pass-val').value; if(l && v) { secrets.push({l,v}); localStorage.setItem('maaz_secrets', JSON.stringify(secrets)); renderPass(); document.getElementById('pass-label').value=''; document.getElementById('pass-val').value=''; } }
     function renderPass() { document.getElementById('pass-list').innerHTML = secrets.map((s,i) => `<div class="vault-item"><div><b>${s.l}</b><br><small>${s.v}</small></div><button onclick="delPass(${i})" style="color:red; bg:none; border:none;">✕</button></div>`).join(''); }
     function delPass(i) { secrets.splice(i,1); localStorage.setItem('maaz_secrets', JSON.stringify(secrets)); renderPass(); }
 
-    // --- TODO (DAY BASED) ---
     let todos = JSON.parse(localStorage.getItem('maaz_todo_v2')) || [];
-    function addTodo() {
-        let val = document.getElementById('todo-input').value;
-        let day = document.getElementById('todo-day').value;
-        if(val) { todos.push({text: val, day: day, done: false}); localStorage.setItem('maaz_todo_v2', JSON.stringify(todos)); renderTodo(); document.getElementById('todo-input').value=''; }
-    }
-    function renderTodo() {
-        const list = document.getElementById('todo-list'); list.innerHTML = '';
-        const days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Someday"];
-        days.forEach(d => {
-            const dayTasks = todos.filter(t => t.day === d);
-            if(dayTasks.length > 0) {
-                list.innerHTML += `<div class="day-header">${d}</div>`;
-                dayTasks.forEach(t => {
-                    // find index in main array
-                    let idx = todos.indexOf(t);
-                    list.innerHTML += `<div class="todo-item ${t.done?'done':''}" onclick="toggleTodo(${idx})"><span>${t.text}</span><button onclick="event.stopPropagation(); delTodo(${idx})" style="color:red; bg:none; border:none;">✕</button></div>`;
-                });
-            }
-        });
-    }
+    function addTodo() { let v = document.getElementById('todo-input').value, d = document.getElementById('todo-day').value; if(v) { todos.push({text: v, day: d, done: false}); localStorage.setItem('maaz_todo_v2', JSON.stringify(todos)); renderTodo(); document.getElementById('todo-input').value=''; } }
+    function renderTodo() { const l = document.getElementById('todo-list'); l.innerHTML = ''; ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Someday"].forEach(d => { const dt = todos.filter(t => t.day === d); if(dt.length > 0) { l.innerHTML += `<div class="day-header">${d}</div>`; dt.forEach(t => { let idx = todos.indexOf(t); l.innerHTML += `<div class="todo-item ${t.done?'done':''}" onclick="toggleTodo(${idx})"><span>${t.text}</span><button onclick="event.stopPropagation(); delTodo(${idx})" style="color:red; bg:none; border:none;">✕</button></div>`; }); } }); }
     function toggleTodo(i) { todos[i].done = !todos[i].done; if(todos[i].done) confetti(); localStorage.setItem('maaz_todo_v2', JSON.stringify(todos)); renderTodo(); }
     function delTodo(i) { todos.splice(i,1); localStorage.setItem('maaz_todo_v2', JSON.stringify(todos)); renderTodo(); }
     renderTodo();
-
-    // --- CALCULATOR ---
-    let cx = "";
-    function cIn(v) { cx += v; document.getElementById('calc-display').innerText = cx; }
-    function cClr() { cx = ""; document.getElementById('calc-display').innerText = "0"; }
-    function cRes() { try { document.getElementById('calc-display').innerText = eval(cx.replace('π', Math.PI)); cx = eval(cx.replace('π', Math.PI)).toString(); } catch { document.getElementById('calc-display').innerText = "Error"; cx=""; } }
 </script>
 </body>
 </html>
