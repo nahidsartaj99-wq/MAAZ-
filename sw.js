@@ -1,20 +1,17 @@
-const CACHE_NAME = "maaz-elite-safe-v1";
-
-// We only cache the main page to start. This prevents crashing.
-const assets = ["/"];
+const CACHE_NAME = "maaz-elite-v100"; // Changed to v100 to force update
+const assets = ["/"]; // Only cache the root, nothing else for now
 
 self.addEventListener("install", (e) => {
-    self.skipWaiting(); // Force activation immediately
+    self.skipWaiting(); // Force this new version to take over immediately
     e.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(assets).catch(err => console.log("Cache error ignored", err));
+            return cache.addAll(assets);
         })
     );
 });
 
 self.addEventListener("activate", (e) => {
-    // Take control of the page immediately
-    e.waitUntil(self.clients.claim());
+    e.waitUntil(self.clients.claim()); // Take control of the page right now
 });
 
 self.addEventListener("fetch", (e) => {
