@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Maaz App</title>
+    <title>Maaz</title>
     
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FF6B6B">
     
+    <link rel="icon" href="https://fav.farm/🚀">
+    <link rel="apple-touch-icon" href="https://fav.farm/🚀">
+
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     
@@ -21,123 +25,29 @@
             --text-main: #2D3436;
             --radius: 24px;
         }
-
-        /* Dark Mode variables */
         .dark-mode {
             --bg-color: #1a1a1a;
             --card-bg: #2d2d2d;
             --text-main: #ffffff;
         }
-
-        * { 
-            box-sizing: border-box; 
-            font-family: 'Outfit', sans-serif; 
-            transition: background 0.3s, color 0.3s;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body { 
-            background-color: var(--bg-color); 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            color: var(--text-main);
-            overflow: hidden;
-        }
-        
-        .mobile-container {
-            width: 100%;
-            max-width: 500px;
-            height: 100vh;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .screen {
-            display: none;
-            padding: 30px 20px;
-            flex-direction: column;
-            height: 100%;
-            overflow-y: auto;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: background 0.3s, color 0.3s; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); margin: 0; color: var(--text-main); overflow-x: hidden; }
+        .mobile-container { width: 100%; max-width: 500px; min-height: 100vh; margin: auto; display: flex; flex-direction: column; }
+        .screen { display: none; padding: 40px 20px; flex-direction: column; min-height: 100vh; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         .screen.active { display: flex; }
-
-        h1 { font-weight: 800; font-size: 3rem; margin: 10px 0 0 0; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .top-row { display: flex; justify-content: space-between; align-items: flex-start; }
-        
-        .mode-toggle {
-            background: var(--card-bg);
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            font-size: 1.2rem;
-        }
-
-        /* CARDS */
-        .menu-card {
-            padding: 40px 25px;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-            color: white;
-            cursor: pointer;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            position: relative;
-            border: none;
-            text-align: left;
-            width: 100%;
-        }
-        .menu-card:active { transform: scale(0.96); }
+        h1 { font-weight: 800; font-size: 3.5rem; margin: 0; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .mode-toggle { background: var(--card-bg); border: none; padding: 12px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 1.2rem; }
+        .menu-card { padding: 40px 25px; border-radius: var(--radius); margin-bottom: 20px; color: white; cursor: pointer; box-shadow: 0 15px 30px rgba(0,0,0,0.1); border: none; text-align: left; width: 100%; }
         .todo-card { background: var(--primary-grad); }
         .calc-card { background: var(--secondary-grad); }
-
-        /* LISTS */
-        .day-section { 
-            background: var(--card-bg); 
-            border-radius: var(--radius); 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.05); 
-        }
+        .day-section { background: var(--card-bg); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
         .task-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .task-text { flex-grow: 1; font-size: 1.1rem; }
+        .task-text { flex-grow: 1; font-size: 1.1rem; cursor: pointer; }
         .completed { text-decoration: line-through; opacity: 0.5; }
-
-        /* CALCULATOR */
-        #calc-display {
-            background: #2D3436;
-            color: white;
-            height: 120px;
-            border-radius: var(--radius);
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
-            padding: 20px;
-            font-size: 3rem;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
+        #calc-display { background: #2D3436; color: white; height: 120px; border-radius: var(--radius); display: flex; align-items: flex-end; justify-content: flex-end; padding: 20px; font-size: 3rem; margin-bottom: 20px; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-        .calc-btn {
-            height: 75px;
-            border-radius: 22px;
-            border: none;
-            font-size: 1.6rem;
-            font-weight: 600;
-            background: var(--card-bg);
-            color: var(--text-main);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+        .calc-btn { height: 75px; border-radius: 22px; border: none; font-size: 1.6rem; font-weight: 600; background: var(--card-bg); color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .op-btn { background: #FFD93D; color: #000; }
         .clear-btn { background: #FF6B6B; color: white; grid-column: span 2; }
     </style>
@@ -145,36 +55,33 @@
 <body>
 
 <div class="mobile-container">
-    
     <div id="home" class="screen active">
-        <div class="top-row">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
             <h1>Maaz</h1>
             <button class="mode-toggle" onclick="toggleDarkMode()">🌓</button>
         </div>
-        <p style="color: #636e72; margin-bottom: 40px;">"Make today count."</p>
-        
+        <p style="opacity: 0.6; margin-bottom: 40px;">Your colorful day starts here.</p>
         <button class="menu-card todo-card" onclick="showScreen('todo')">
             <div style="font-size: 2rem; font-weight: 800;">To-Do List</div>
-            <div style="opacity: 0.8;">Organize your life</div>
+            <div style="opacity: 0.9;">Stay Organized</div>
         </button>
-
         <button class="menu-card calc-card" onclick="showScreen('calc')">
             <div style="font-size: 2rem; font-weight: 800;">Calculator</div>
-            <div style="opacity: 0.8;">Quick & Easy</div>
+            <div style="opacity: 0.9;">Math made easy</div>
         </button>
     </div>
 
     <div id="todo" class="screen">
-        <div onclick="showScreen('home')" style="cursor:pointer; font-weight:600; margin-bottom:20px;">← BACK</div>
+        <div onclick="showScreen('home')" style="cursor:pointer; font-weight:800; margin-bottom:20px; color: #FF6B6B;">← BACK</div>
         <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-            <input type="text" id="dayInput" placeholder="Add Day (e.g. Monday)" style="flex:1; padding: 15px; border-radius: 15px; border: 2px solid #eee; outline: none;">
+            <input type="text" id="dayInput" placeholder="Day (e.g. Monday)" style="flex:1; padding: 15px; border-radius: 15px; border: 2px solid #eee; outline: none; background: var(--card-bg); color: var(--text-main);">
             <button onclick="addDay()" style="background:var(--primary-grad); border:none; padding:15px; border-radius:15px; color:white; font-weight:bold;">ADD</button>
         </div>
         <div id="todo-list-container"></div>
     </div>
 
     <div id="calc" class="screen">
-        <div onclick="showScreen('home')" style="cursor:pointer; font-weight:600; margin-bottom:20px;">← BACK</div>
+        <div onclick="showScreen('home')" style="cursor:pointer; font-weight:800; margin-bottom:20px; color: #4D96FF;">← BACK</div>
         <div id="calc-display">0</div>
         <div class="calc-grid">
             <button class="calc-btn clear-btn" onclick="clearCalc()">C</button>
@@ -196,52 +103,43 @@
             <button class="calc-btn" onclick="inputNum('.')">.</button>
         </div>
     </div>
-
 </div>
 
 <script>
-    // NAVIGATION
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
     }
 
-    // DARK MODE
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('maaz_theme', isDark ? 'dark' : 'light');
+        localStorage.setItem('maaz_theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
     }
 
-    // TO-DO LOGIC
     let todoData = JSON.parse(localStorage.getItem('maaz_todos')) || {};
 
     function saveAndRender() {
         localStorage.setItem('maaz_todos', JSON.stringify(todoData));
         const container = document.getElementById('todo-list-container');
         container.innerHTML = '';
-
         for (let day in todoData) {
             let section = document.createElement('div');
             section.className = 'day-section';
-            let tasksHtml = todoData[day].map((task, i) => `
+            let tasks = todoData[day].map((t, i) => `
                 <div class="task-item">
-                    <span class="task-text ${task.done ? 'completed' : ''}" onclick="toggleTask('${day}', ${i})">${task.text}</span>
-                    <button onclick="deleteTask('${day}', ${i})" style="background:none; border:none; color:#FF6B6B; font-size:1.2rem;">×</button>
-                </div>
-            `).join('');
-
+                    <span class="task-text ${t.done ? 'completed' : ''}" onclick="toggleTask('${day}', ${i})">${t.text}</span>
+                    <button onclick="deleteTask('${day}', ${i}')" style="background:none; border:none; color:#FF6B6B;">×</button>
+                </div>`).join('');
             section.innerHTML = `
-                <div style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
-                    <b style="font-size:1.3rem;">${day}</b>
-                    <button onclick="deleteDay('${day}')" style="background:none; border:none; opacity:0.5; font-size:0.8rem; color:var(--text-main);">Delete Day</button>
+                <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                    <b>${day}</b>
+                    <button onclick="deleteDay('${day}')" style="background:none; border:none; font-size:0.7rem; color:gray;">Delete Day</button>
                 </div>
-                ${tasksHtml}
-                <div style="margin-top:15px; display:flex; gap:10px;">
-                    <input type="text" id="in-${day}" placeholder="New task..." style="flex:1; border:none; border-bottom:2px solid #eee; background:transparent; color:var(--text-main); outline:none;">
-                    <button onclick="addTask('${day}')" style="background:var(--secondary-grad); border:none; color:white; border-radius:8px; padding:5px 12px;">+</button>
-                </div>
-            `;
+                ${tasks}
+                <div style="margin-top:10px; display:flex; gap:5px;">
+                    <input type="text" id="in-${day}" placeholder="Add task..." style="flex:1; border:none; border-bottom:1px solid #ddd; background:transparent; color:inherit;">
+                    <button onclick="addTask('${day}')" style="background:var(--secondary-grad); border:none; color:white; border-radius:50%; width:30px; height:30px;">+</button>
+                </div>`;
             container.appendChild(section);
         }
     }
@@ -250,35 +148,27 @@
         const val = document.getElementById('dayInput').value.trim();
         if(val && !todoData[val]) { todoData[val] = []; document.getElementById('dayInput').value = ''; saveAndRender(); }
     }
-
     function addTask(day) {
         const val = document.getElementById('in-'+day).value.trim();
         if(val) { todoData[day].push({text: val, done: false}); saveAndRender(); }
     }
-
     function toggleTask(day, i) {
         todoData[day][i].done = !todoData[day][i].done;
-        if(todoData[day].every(t => t.done)) confetti({ particleCount: 150, spread: 60 });
+        if(todoData[day].every(t => t.done)) confetti({ particleCount: 100, spread: 70 });
         saveAndRender();
     }
-
     function deleteTask(day, i) { todoData[day].splice(i, 1); saveAndRender(); }
     function deleteDay(day) { delete todoData[day]; saveAndRender(); }
 
-    // CALC LOGIC
     let calcStr = "";
     function inputNum(n) { calcStr += n; updateCalc(); }
     function inputOp(o) { calcStr += " " + o + " "; updateCalc(); }
     function clearCalc() { calcStr = ""; updateCalc(); }
     function updateCalc() { document.getElementById('calc-display').innerText = calcStr || "0"; }
-    function calculate() {
-        try { calcStr = eval(calcStr).toString(); updateCalc(); } catch { calcStr = ""; document.getElementById('calc-display').innerText = "Error"; }
-    }
+    function calculate() { try { calcStr = eval(calcStr).toString(); updateCalc(); } catch { calcStr = ""; updateCalc(); } }
 
-    // Run on Load
     if(localStorage.getItem('maaz_theme') === 'dark') document.body.classList.add('dark-mode');
     saveAndRender();
 </script>
-
 </body>
 </html>
