@@ -1,11 +1,11 @@
 {
   "name": "Maaz Elite",
   "short_name": "Maaz Elite",
-  "start_url": "index.html",
+  "start_url": ".",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#121212",
   "theme_color": "#00D4FF",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icon.jpg",
