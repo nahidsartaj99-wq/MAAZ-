@@ -9,8 +9,8 @@
         :root { 
             --bg: #0f0f1a; --card: #1b1b2f; --text: #fff; 
             --neon-blue: #00D4FF; --neon-red: #FF3131; 
-            --r: #ef5777; --g: #0be881; --y: #ffdd59; --b: #4bcffa;
-            --safe-star: url('data:image/svg+xml;utf8,<svg fill="%23888" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>');
+            --r: #ff3838; --g: #20bf6b; --y: #f7b731; --b: #3867d6; /* Deeper colors */
+            --safe-star: url('data:image/svg+xml;utf8,<svg fill="%23fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>');
         }
         body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; margin: 0; padding: 0; overflow: hidden; height: 100vh; display: flex; flex-direction: column; user-select: none; }
         
@@ -31,41 +31,62 @@
         .x { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
         .o { color: var(--neon-red); text-shadow: 0 0 15px var(--neon-red); }
 
-        /* LUDO BOARD */
-        .ludo-wrapper { width: 350px; height: 350px; background: #fff; margin-top: 20px; border: 2px solid #000; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        /* LUDO BOARD - FIXED OVERLAP */
+        .ludo-wrapper { width: 350px; height: 350px; background: #fff; margin-top: 20px; border: 2px solid #000; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.6); border-radius: 4px; }
         .ludo-grid { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(15, 1fr); background: #eee; }
         
-        .cell { border: 0.5px solid rgba(0,0,0,0.1); position: relative; display: flex; justify-content: center; align-items: center; }
-        .base { grid-column: span 6; grid-row: span 6; border: 1px solid #000; padding: 15px; }
-        .base-box { width: 100%; height: 100%; background: #fff; border-radius: 15px; display: grid; grid-template-columns: 1fr 1fr; place-items: center; border: 15px solid transparent; }
+        .cell { 
+            /* Use box-shadow instead of border to prevent overlap */
+            box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2);
+            position: relative; display: flex; justify-content: center; align-items: center; 
+        }
+        .base { grid-column: span 6; grid-row: span 6; border: 0.5px solid rgba(0,0,0,0.2); padding: 15px; }
+        .base-box { width: 100%; height: 100%; background: #fff; border-radius: 20px; display: grid; grid-template-columns: 1fr 1fr; place-items: center; border: 18px solid transparent; box-shadow: inset 0 0 10px rgba(0,0,0,0.2); }
         
         .c-red { background: var(--r); } .b-red { border-color: var(--r); }
         .c-grn { background: var(--g); } .b-grn { border-color: var(--g); }
         .c-yel { background: var(--y); } .b-yel { border-color: var(--y); }
         .c-blu { background: var(--b); } .b-blu { border-color: var(--b); }
         
-        .star { background-image: var(--safe-star); background-size: 80%; background-repeat: no-repeat; background-position: center; opacity: 0.6; }
-        .center-box { grid-column: 7 / 10; grid-row: 7 / 10; background: conic-gradient(var(--g) 0deg 90deg, var(--r) 90deg 180deg, var(--b) 180deg 270deg, var(--y) 270deg 360deg); border: 1px solid #000; position: relative; }
+        .star { background-image: var(--safe-star); background-size: 70%; background-repeat: no-repeat; background-position: center; opacity: 0.8; }
+        .center-box { grid-column: 7 / 10; grid-row: 7 / 10; background: conic-gradient(var(--g) 0deg 90deg, var(--r) 90deg 180deg, var(--b) 180deg 270deg, var(--y) 270deg 360deg); box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.2); position: relative; }
         
-        /* 3D PAWNS */
-        .pawn { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.8); position: absolute; z-index: 10; box-shadow: 0 3px 5px rgba(0,0,0,0.5), inset 0 -3px 5px rgba(0,0,0,0.2); transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); cursor: pointer; }
-        .pawn.r { background: radial-gradient(circle at 30% 30%, #ff8da1, #ef5777); }
-        .pawn.g { background: radial-gradient(circle at 30% 30%, #7bed9f, #2ed573); }
-        .pawn.y { background: radial-gradient(circle at 30% 30%, #ffeaa7, #fdcb6e); }
-        .pawn.b { background: radial-gradient(circle at 30% 30%, #74b9ff, #0984e3); }
-        .pawn.stacked { transform: scale(0.8); }
-        .pawn.highlight { animation: bounce 0.6s infinite alternate; box-shadow: 0 0 10px #fff; border-color: #fff; }
+        /* NEW 3D PAWNS & STACKING */
+        .pawn { 
+            width: 22px; height: 22px; border-radius: 50%; 
+            position: absolute; z-index: 10; 
+            /* 3D Jewel Effect */
+            box-shadow: 0 4px 5px rgba(0,0,0,0.4), inset 0 -3px 5px rgba(0,0,0,0.3), inset 0 2px 2px rgba(255,255,255,0.5);
+            transition: all 0.3s cubic-bezier(0.3, 0.0, 0.2, 1); cursor: pointer; 
+        }
+        /* High-gloss gradients */
+        .pawn.r { background: radial-gradient(circle at 35% 35%, #fff 5%, #ff8da1 40%, #ef5777 80%, #c44569 100%); }
+        .pawn.g { background: radial-gradient(circle at 35% 35%, #fff 5%, #7bed9f 40%, #2ed573 80%, #218c74 100%); }
+        .pawn.y { background: radial-gradient(circle at 35% 35%, #fff 5%, #ffeaa7 40%, #fdcb6e 80%, #e58e26 100%); }
+        .pawn.b { background: radial-gradient(circle at 35% 35%, #fff 5%, #74b9ff 40%, #0984e3 80%, #0652dd 100%); }
+        
+        /* Stacking Offsets */
+        .pawn.stack-1 { transform: translate(4px, -4px); z-index: 11; }
+        .pawn.stack-2 { transform: translate(8px, -8px); z-index: 10; }
+        .pawn.stack-3 { transform: translate(12px, -12px); z-index: 9; }
+        
+        /* Bounce Animations */
+        .pawn.highlight { animation: bounce 0.7s infinite alternate; box-shadow: 0 0 15px var(--neon-blue), 0 4px 5px rgba(0,0,0,0.4); }
+        .pawn.stack-1.highlight { animation: bounce-1 0.7s infinite alternate; }
+        .pawn.stack-2.highlight { animation: bounce-2 0.7s infinite alternate; }
         
         @keyframes bounce { from { transform: translateY(0) scale(1.1); } to { transform: translateY(-8px) scale(1.1); } }
+        @keyframes bounce-1 { from { transform: translate(4px, -4px) scale(1.1); } to { transform: translate(4px, -12px) scale(1.1); } }
+        @keyframes bounce-2 { from { transform: translate(8px, -8px) scale(1.1); } to { transform: translate(8px, -16px) scale(1.1); } }
 
         /* DICE & CONTROLS */
-        .controls { width: 350px; background: var(--card); padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border: 1px solid #333; }
-        .dice { width: 50px; height: 50px; background: #fff; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; color: #000; box-shadow: inset -2px -2px 5px rgba(0,0,0,0.2); cursor: pointer; }
+        .controls { width: 350px; background: var(--card); padding: 15px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border: 1px solid #333; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .dice { width: 55px; height: 55px; background: #fff; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 2rem; color: #000; box-shadow: inset -3px -3px 8px rgba(0,0,0,0.2), 0 5px 10px rgba(0,0,0,0.3); cursor: pointer; }
         .dice.rolling { animation: roll 0.4s ease-in-out; }
         @keyframes roll { 0% { transform: rotate(0); } 100% { transform: rotate(360deg); } }
         
-        select, button { padding: 12px; background: #333; color: white; border: 1px solid #555; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 10px; }
-        button.primary { background: var(--neon-blue); color: #000; border: none; }
+        select, button { padding: 12px; background: #333; color: white; border: 1px solid #555; border-radius: 10px; font-weight: bold; width: 100%; margin-bottom: 10px; font-size: 1rem; }
+        button.primary { background: var(--neon-blue); color: #000; border: none; box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3); }
     </style>
 </head>
 <body><div class="nav-bar">
@@ -133,13 +154,13 @@
     
     <div class="controls">
         <div>
-            <div id="l-turn" style="font-weight:900; font-size:1.1rem; color:var(--r)">RED'S TURN</div>
+            <div id="l-turn" style="font-weight:900; font-size:1.1rem; color:var(--r); text-transform: uppercase;">RED'S TURN</div>
             <div id="l-msg" style="font-size:0.8rem; opacity:0.7;">Tap Dice to Roll</div>
         </div>
         <div class="dice" id="dice" onclick="rollDice()">🎲</div>
     </div>
-    <div style="margin-top:15px;">
-        <button onclick="goHome()" style="background:#333; width:auto; padding:8px 20px;">Exit Game</button>
+    <div style="margin-top:20px;">
+        <button onclick="goHome()" style="background:#333; width:auto; padding:10px 25px;">Exit Game</button>
     </div>
 </div><script>
     // --- NAVIGATION ---
@@ -199,11 +220,9 @@
             let empty = tBoard.map((v, i) => v === null ? i : null).filter(v => v !== null);
             move = empty[Math.floor(Math.random() * empty.length)];
         } else if (tDiff === 'med') {
-            // Block or Random
             move = findBestMove(tBoard, 'O', false); // False means depth 1 (simple)
         } else {
-            // Unbeatable
-            move = findBestMove(tBoard, 'O', true);
+            move = findBestMove(tBoard, 'O', true); // Unbeatable
         }
         
         tBoard[move] = 'O';
@@ -228,31 +247,16 @@
     }
 
     function findBestMove(bd, player, hard) {
-        // Simple Minimax for Hard, One-step for Medium
         let empty = bd.map((v, i) => v === null ? i : null).filter(v => v !== null);
-        
         // Check immediate win/block
-        for(let i of empty) {
-            bd[i] = player;
-            if(checkWinner(bd) === player) { bd[i]=null; return i; }
-            bd[i] = null;
-        }
+        for(let i of empty) { bd[i] = player; if(checkWinner(bd) === player) { bd[i]=null; return i; } bd[i] = null; }
         let opponent = player==='O'?'X':'O';
-        for(let i of empty) {
-            bd[i] = opponent;
-            if(checkWinner(bd) === opponent) { bd[i]=null; return i; }
-            bd[i] = null;
-        }
-        
+        for(let i of empty) { bd[i] = opponent; if(checkWinner(bd) === opponent) { bd[i]=null; return i; } bd[i] = null; }
         if(!hard) return empty[Math.floor(Math.random() * empty.length)];
-
         // Minimax (Hard)
-        let bestScore = -Infinity;
-        let bestMove = empty[0];
+        let bestScore = -Infinity; let bestMove = empty[0];
         for (let i of empty) {
-            bd[i] = player;
-            let score = minimax(bd, 0, false);
-            bd[i] = null;
+            bd[i] = player; let score = minimax(bd, 0, false); bd[i] = null;
             if (score > bestScore) { bestScore = score; bestMove = i; }
         }
         return bestMove;
@@ -260,297 +264,144 @@
 
     function minimax(bd, depth, isMax) {
         let res = checkWinner(bd);
-        if (res === 'O') return 10 - depth;
-        if (res === 'X') return depth - 10;
-        if (!bd.includes(null)) return 0;
-
+        if (res === 'O') return 10 - depth; if (res === 'X') return depth - 10; if (!bd.includes(null)) return 0;
         if (isMax) {
             let best = -Infinity;
-            for (let i = 0; i < 9; i++) {
-                if (bd[i] === null) {
-                    bd[i] = 'O';
-                    best = Math.max(best, minimax(bd, depth + 1, false));
-                    bd[i] = null;
-                }
-            }
+            for (let i = 0; i < 9; i++) { if (bd[i] === null) { bd[i] = 'O'; best = Math.max(best, minimax(bd, depth + 1, false)); bd[i] = null; } }
             return best;
         } else {
             let best = Infinity;
-            for (let i = 0; i < 9; i++) {
-                if (bd[i] === null) {
-                    bd[i] = 'X';
-                    best = Math.min(best, minimax(bd, depth + 1, true));
-                    bd[i] = null;
-                }
-            }
+            for (let i = 0; i < 9; i++) { if (bd[i] === null) { bd[i] = 'X'; best = Math.min(best, minimax(bd, depth + 1, true)); bd[i] = null; } }
             return best;
         }
     }
 </script><script>
-    // --- LUDO BOARD GENERATION (15x15) ---
-    // Bases: Red(TL), Green(TR), Blue(BR), Yellow(BL) -- Note: Standard Ludo varies, I will strictly follow this layout:
-    // Red=TopLeft, Green=TopRight, Blue=BottomLeft, Yellow=BottomRight.
-    
+    // --- LUDO BOARD GENERATION ---
     function drawLudoBoard() {
-        const b = document.getElementById('l-board');
-        b.innerHTML = '';
-        
-        // Add Center
-        let center = document.createElement('div');
-        center.className = 'center-box';
-        b.appendChild(center);
-
-        // Add 4 Bases
-        addBase(b, 1, 1, 'red', 'b-red');
-        addBase(b, 1, 10, 'grn', 'b-grn');
-        addBase(b, 10, 1, 'blu', 'b-blu'); // Blue at bottom left
-        addBase(b, 10, 10, 'yel', 'b-yel'); // Yellow at bottom right
-
-        // Generate Cells
+        const b = document.getElementById('l-board'); b.innerHTML = '';
+        // Center
+        let center = document.createElement('div'); center.className = 'center-box'; b.appendChild(center);
+        // Bases
+        addBase(b, 1, 1, 'red', 'b-red'); addBase(b, 1, 10, 'grn', 'b-grn');
+        addBase(b, 10, 1, 'blu', 'b-blu'); addBase(b, 10, 10, 'yel', 'b-yel');
+        // Cells
         for(let r=1; r<=15; r++) {
             for(let c=1; c<=15; c++) {
-                // Skip Bases and Center (they are absolute or spanned)
                 if((r<=6 && c<=6) || (r<=6 && c>=10) || (r>=10 && c<=6) || (r>=10 && c>=10) || (r>=7 && r<=9 && c>=7 && c<=9)) continue;
-                
-                let cell = document.createElement('div');
-                cell.className = 'cell';
-                cell.style.gridRow = r;
-                cell.style.gridColumn = c;
-                cell.id = `c-${r}-${c}`; // Important for movement
-                
-                // Color Paths (Home Straights)
-                if(r===8 && c>1 && c<7) cell.classList.add('c-red'); // Red Home Path
-                if(c===8 && r>1 && r<7) cell.classList.add('c-grn'); // Green Home Path
-                if(r===8 && c>9 && c<15) cell.classList.add('c-yel'); // Yellow Home Path (Right)
-                if(c===8 && r>9 && r<15) cell.classList.add('c-blu'); // Blue Home Path (Bottom)
-                
-                // Start Points
-                if(r===7 && c===2) { cell.classList.add('c-red'); cell.classList.add('star'); } // Red Start
-                if(r===2 && c===9) { cell.classList.add('c-grn'); cell.classList.add('star'); } // Green Start
-                if(r===9 && c===14) { cell.classList.add('c-yel'); cell.classList.add('star'); } // Yellow Start
-                if(r===14 && c===7) { cell.classList.add('c-blu'); cell.classList.add('star'); } // Blue Start
-                
-                // Other Stars
-                if(r===3 && c===7) cell.classList.add('star');
-                if(r===7 && c===13) cell.classList.add('star');
-                if(r===13 && c===9) cell.classList.add('star');
-                if(r===9 && c===3) cell.classList.add('star');
-
+                let cell = document.createElement('div'); cell.className = 'cell';
+                cell.style.gridRow = r; cell.style.gridColumn = c;
+                // Home Paths
+                if(r===8 && c>1 && c<7) cell.classList.add('c-red');
+                if(c===8 && r>1 && r<7) cell.classList.add('c-grn');
+                if(r===8 && c>9 && c<15) cell.classList.add('c-yel');
+                if(c===8 && r>9 && r<15) cell.classList.add('c-blu');
+                // Starts & Stars
+                if(r===7 && c===2) { cell.classList.add('c-red', 'star'); }
+                if(r===2 && c===9) { cell.classList.add('c-grn', 'star'); }
+                if(r===9 && c===14) { cell.classList.add('c-yel', 'star'); }
+                if(r===14 && c===7) { cell.classList.add('c-blu', 'star'); }
+                if((r===3&&c===7)||(r===7&&c===13)||(r===13&&c===9)||(r===9&&c===3)) cell.classList.add('star');
                 b.appendChild(cell);
             }
         }
     }
+    function addBase(p, r, c, col, bor) {
+        let b = document.createElement('div'); b.className = `base ${bor}`;
+        b.style.gridRow = `${r}/span 6`; b.style.gridColumn = `${c}/span 6`;
+        b.innerHTML = `<div class="base-box ${bor}"></div>`; p.appendChild(b);
+    }
 
-    function addBase(parent, r, c, colClass, borClass) {
-        let base = document.createElement('div');
-        base.className = `base ${borClass}`;
-        base.style.gridRow = `${r} / span 6`;
-        base.style.gridColumn = `${c} / span 6`;
-        base.innerHTML = `<div class="base-box ${borClass}"></div>`;
-        parent.appendChild(base);
+    // --- LUDO PAWN RENDERING WITH STACKING ---
+    function initPawns() {
+        const layer = document.getElementById('pawn-layer'); layer.innerHTML = '';
+        lPawns = []; const colors = ['r', 'g', 'y', 'b'];
+        const basePos = [[[2.5,2.5],[2.5,4.5],[4.5,2.5],[4.5,4.5]], [[2.5,11.5],[2.5,13.5],[4.5,11.5],[4.5,13.5]], [[11.5,11.5],[11.5,13.5],[13.5,11.5],[13.5,13.5]], [[11.5,2.5],[11.5,4.5],[13.5,2.5],[13.5,4.5]]];
+        for(let c=0; c<4; c++) { for(let p=0; p<4; p++) {
+            let el = document.createElement('div'); el.className = `pawn ${colors[c]}`;
+            el.onclick = () => movePawn(c, p); layer.appendChild(el);
+            lPawns.push({ el, color: c, id: p, step: -1, baseR: basePos[c][p][0], baseC: basePos[c][p][1] });
+            renderPawn(lPawns[lPawns.length-1]);
+        }}
+    }
+
+    function renderPawn(p) {
+        let r, c; const size = 350/15;
+        if(p.step === -1) { r = p.baseR; c = p.baseC; }
+        else if(p.step >= 57) { r=8; c=8; p.el.style.opacity=0; }
+        else { let coord = paths[p.color][p.step].split('-'); r = parseFloat(coord[0]); c = parseFloat(coord[1]); }
+        p.el.style.top = (r-1) * size + 1 + "px"; p.el.style.left = (c-1) * size + 1 + "px";
+        
+        // Stacking Logic
+        p.el.classList.remove('stack-0', 'stack-1', 'stack-2', 'stack-3');
+        let onSpot = lPawns.filter(o => o.color===p.color && o.step===p.step && o.step!==-1 && o.step<57);
+        if(onSpot.length > 1) {
+            onSpot.sort((a,b) => a.id - b.id);
+            let idx = onSpot.indexOf(p);
+            p.el.classList.add(`stack-${(onSpot.length-1)-idx}`);
+        }
     }
 </script><script>
     // --- LUDO GAME LOGIC ---
-    let lTurn = 0; // 0:Red, 1:Green, 2:Yellow, 3:Blue
-    let lPawns = [];
-    let lDice = 0;
-    let lState = 'WAIT'; // WAIT, ROLL, MOVE
-    let lHumans = 1;
-    
-    // Path Coordinates (The strict 52 step loop + Home path)
-    // Format: "row-col"
-    const paths = {
-        0: generatePath(0), // Red
-        1: generatePath(1), // Green
-        2: generatePath(2), // Yellow
-        3: generatePath(3)  // Blue
-    };
+    let lTurn=0, lPawns=[], lDice=0, lState='WAIT', lHumans=1;
+    // Paths (Red, Green, Yellow, Blue)
+    const common=["7-2","7-3","7-4","7-5","7-6","6-7","5-7","4-7","3-7","2-7","1-7","1-8","1-9","2-9","3-9","4-9","5-9","6-9","7-10","7-11","7-12","7-13","7-14","7-15","8-15","9-15","9-14","9-13","9-12","9-11","9-10","10-9","11-9","12-9","13-9","14-9","15-9","15-8","15-7","14-7","13-7","12-7","11-7","10-7","9-7","9-6","9-5","9-4","9-3","9-2","9-1","8-1"];
+    const homes=[["8-2","8-3","8-4","8-5","8-6","8-7"],["2-8","3-8","4-8","5-8","6-8","7-8"],["8-14","8-13","8-12","8-11","8-10","8-9"],["14-8","13-8","12-8","11-8","10-8","9-8"]];
+    const paths={0:[],1:[],2:[],3:[]};
+    for(let c=0; c<4; c++) { for(let i=0; i<51; i++) paths[c].push(common[(c*13+i)%52]); paths[c]=paths[c].concat(homes[c]); }
 
     function startLudo() {
         lHumans = parseInt(document.getElementById('ludo-humans').value);
         document.getElementById('setup-ludo').classList.remove('active');
         document.getElementById('game-ludo').classList.add('active');
-        drawLudoBoard();
-        initPawns();
-        lTurn = 0;
-        updateLudoUI();
-    }
-
-    function initPawns() {
-        const layer = document.getElementById('pawn-layer');
-        layer.innerHTML = '';
-        lPawns = [];
-        const colors = ['r', 'g', 'y', 'b'];
-        
-        // Base positions for 4 pawns per color
-        const basePos = [
-            [[2.5,2.5],[2.5,4.5],[4.5,2.5],[4.5,4.5]], // Red Base
-            [[2.5,11.5],[2.5,13.5],[4.5,11.5],[4.5,13.5]], // Green Base
-            [[11.5,11.5],[11.5,13.5],[13.5,11.5],[13.5,13.5]], // Yellow Base
-            [[11.5,2.5],[11.5,4.5],[13.5,2.5],[13.5,4.5]] // Blue Base
-        ];
-
-        for(let c=0; c<4; c++) {
-            for(let p=0; p<4; p++) {
-                let pawn = document.createElement('div');
-                pawn.className = `pawn ${colors[c]}`;
-                pawn.onclick = () => movePawn(c, p);
-                layer.appendChild(pawn);
-                
-                lPawns.push({
-                    el: pawn, color: c, id: p, step: -1, // -1 means in base
-                    baseR: basePos[c][p][0], baseC: basePos[c][p][1]
-                });
-                renderPawn(lPawns[lPawns.length-1]);
-            }
-        }
-    }
-
-    function renderPawn(p) {
-        let r, c;
-        if(p.step === -1) { r = p.baseR; c = p.baseC; } // In Base
-        else if(p.step >= paths[p.color].length) { r=8; c=8; p.el.style.opacity=0; } // Won
-        else {
-            let coord = paths[p.color][p.step].split('-');
-            r = parseFloat(coord[0]); c = parseFloat(coord[1]);
-        }
-        
-        // Convert Grid Row/Col to pixels (350px box / 15 grids = 23.33px per grid)
-        const size = 350/15;
-        p.el.style.top = (r-1) * size + 2 + "px"; // +2 for centering
-        p.el.style.left = (c-1) * size + 2 + "px";
-        
-        // Handle Stacking (Simple offset)
-        // Advanced stacking requires checking all pawns positions, skipped for brevity in Lite version
+        drawLudoBoard(); initPawns(); lTurn=0; updateLudoUI();
     }
 
     function rollDice() {
-        if(lState !== 'ROLL') return;
-        let d = document.getElementById('dice');
-        d.classList.add('rolling');
-        
-        setTimeout(() => {
-            lDice = Math.floor(Math.random() * 6) + 1;
-            d.innerText = lDice;
-            d.classList.remove('rolling');
-            
-            // Check playable pawns
-            let playable = lPawns.filter(p => p.color === lTurn && canMove(p, lDice));
-            
-            if(playable.length === 0) {
-                lState = 'WAIT';
-                setTimeout(nextLudoTurn, 1000);
-            } else if (playable.length === 1 && lHumans > lTurn) {
-                // Auto move single option for human
-                doMove(playable[0]);
-            } else {
-                lState = 'MOVE';
-                document.getElementById('l-msg').innerText = "Select a Token";
-                playable.forEach(p => p.el.classList.add('highlight'));
-                
-                if(lTurn >= lHumans) { // CPU
-                    setTimeout(() => {
-                        // CPU Logic: Prioritize Kill > Open > Run
-                        let move = playable.find(p => willKill(p, lDice)) || playable.find(p => p.step === -1) || playable[0];
-                        doMove(move);
-                    }, 800);
-                }
+        if(lState!=='ROLL') return;
+        let d=document.getElementById('dice'); d.classList.add('rolling');
+        setTimeout(()=>{
+            lDice=Math.floor(Math.random()*6)+1; d.innerText=lDice; d.classList.remove('rolling');
+            let playable=lPawns.filter(p=>p.color===lTurn && canMove(p,lDice));
+            if(playable.length===0) { lState='WAIT'; setTimeout(nextLudoTurn, 1000); }
+            else if(playable.length===1 && lHumans>lTurn) doMove(playable[0]);
+            else {
+                lState='MOVE'; document.getElementById('l-msg').innerText="Select a Pawn";
+                playable.forEach(p=>p.el.classList.add('highlight'));
+                if(lTurn>=lHumans) setTimeout(()=>{ let m=playable.find(p=>willKill(p,lDice))||playable.find(p=>p.step===-1)||playable[0]; doMove(m); }, 800);
             }
         }, 400);
     }
 
-    function canMove(p, d) {
-        if(p.step === -1) return d === 6; // Open base
-        return (p.step + d) < paths[p.color].length; // Move not exceeding home
-    }
-
-    function movePawn(c, id) {
-        if(lState !== 'MOVE' || c !== lTurn) return;
-        let p = lPawns.find(x => x.color === c && x.id === id);
-        if(canMove(p, lDice)) doMove(p);
-    }
-
-    function doMove(p) {
-        lPawns.forEach(x => x.el.classList.remove('highlight'));
-        
-        if(p.step === -1) p.step = 0; // Exit base
-        else p.step += lDice;
-        
-        // Kill Logic
-        let myPos = paths[p.color][p.step];
-        if(!isSafe(myPos)) {
-            let enemy = lPawns.find(x => x.color !== p.color && x.step !== -1 && paths[x.color][x.step] === myPos);
-            if(enemy) {
-                enemy.step = -1; // Send back to base
-                renderPawn(enemy);
-            }
-        }
-        
-        renderPawn(p);
-        
-        if(lDice === 6) {
-            lState = 'ROLL';
-            document.getElementById('l-msg').innerText = "Rolled 6! Roll Again";
-            if(lTurn >= lHumans) setTimeout(rollDice, 1000);
-        } else {
-            lState = 'WAIT';
-            setTimeout(nextLudoTurn, 800);
-        }
-    }
-
-    function nextLudoTurn() {
-        lTurn = (lTurn + 1) % 4;
-        updateLudoUI();
-        if(lTurn >= lHumans) setTimeout(rollDice, 1000); // CPU Start
-    }
-
-    function updateLudoUI() {
-        const names = ["RED", "GREEN", "YELLOW", "BLUE"];
-        const cols = ["var(--r)", "var(--g)", "var(--y)", "var(--b)"];
-        let txt = document.getElementById('l-turn');
-        txt.innerText = names[lTurn] + "'S TURN";
-        txt.style.color = cols[lTurn];
-        document.getElementById('l-msg').innerText = lTurn < lHumans ? "Tap Dice" : "CPU Rolling...";
-        document.getElementById('dice').innerText = "🎲";
-        lState = 'ROLL';
-    }
-
-    // --- UTILS ---
-    function isSafe(coord) {
-        // Star Coordinates
-        const safes = ["7-2", "9-3", "13-7", "14-9", "9-14", "7-13", "3-9", "2-7"];
-        return safes.includes(coord);
-    }
+    function canMove(p,d) { if(p.step===-1)return d===6; return(p.step+d)<57; }
+    function movePawn(c,id) { if(lState!=='MOVE'||c!==lTurn)return; let p=lPawns.find(x=>x.color===c&&x.id===id); if(canMove(p,lDice))doMove(p); }
     
-    function willKill(p, d) {
-        // CPU Heuristic
-        if(p.step === -1) return false;
-        let futurePos = paths[p.color][p.step + d];
-        if(isSafe(futurePos)) return false;
-        return lPawns.some(x => x.color !== p.color && x.step !== -1 && paths[x.color][x.step] === futurePos);
+    function doMove(p) {
+        lPawns.forEach(x=>x.el.classList.remove('highlight'));
+        let oldStep = p.step;
+        if(p.step===-1) p.step=0; else p.step+=lDice;
+        // Kill
+        let myPos=paths[p.color][p.step];
+        if(!isSafe(myPos)) {
+            let enemy=lPawns.find(x=>x.color!==p.color && x.step!==-1 && x.step<52 && paths[x.color][x.step]===myPos);
+            if(enemy) { enemy.step=-1; renderPawn(enemy); }
+        }
+        // Re-render affected stacks
+        renderPawn(p);
+        if(oldStep!==-1) lPawns.filter(o=>o.color===p.color && o.step===oldStep && o!==p).forEach(renderPawn);
+        lPawns.filter(o=>o.color===p.color && o.step===p.step && o!==p).forEach(renderPawn);
+
+        if(lDice===6) { lState='ROLL'; document.getElementById('l-msg').innerText="Rolled 6! Roll Again"; if(lTurn>=lHumans)setTimeout(rollDice,1000); }
+        else { lState='WAIT'; setTimeout(nextLudoTurn, 800); }
     }
 
-    function generatePath(c) {
-        // Hardcoded full paths for each color (Step 0 to Home)
-        // This avoids complex math errors. 
-        // 0=Red, 1=Green, 2=Yellow, 3=Blue
-        const common = [
-            "7-2","7-3","7-4","7-5","7-6","6-7","5-7","4-7","3-7","2-7","1-7","1-8","1-9","2-9","3-9","4-9","5-9","6-9","7-10","7-11","7-12","7-13","7-14","7-15","8-15","9-15","9-14","9-13","9-12","9-11","9-10","10-9","11-9","12-9","13-9","14-9","15-9","15-8","15-7","14-7","13-7","12-7","11-7","10-7","9-7","9-6","9-5","9-4","9-3","9-2","9-1","8-1"
-        ];
-        // Rotate path based on color index (13 steps offset per color)
-        let steps = [];
-        let startIdx = c * 13;
-        for(let i=0; i<51; i++) steps.push(common[(startIdx + i) % 52]);
-        
-        // Append Home Straight
-        const homes = [
-            ["8-2","8-3","8-4","8-5","8-6","8-7"], // Red Home
-            ["2-8","3-8","4-8","5-8","6-8","7-8"], // Green Home
-            ["8-14","8-13","8-12","8-11","8-10","8-9"], // Yellow Home
-            ["14-8","13-8","12-8","11-8","10-8","9-8"]  // Blue Home
-        ];
-        return steps.concat(homes[c]);
+    function nextLudoTurn() { lTurn=(lTurn+1)%4; updateLudoUI(); if(lTurn>=lHumans)setTimeout(rollDice,1000); }
+    function updateLudoUI() {
+        const n=["RED","GREEN","YELLOW","BLUE"], c=["var(--r)","var(--g)","var(--y)","var(--b)"];
+        let t=document.getElementById('l-turn'); t.innerText=n[lTurn]+"'S TURN"; t.style.color=c[lTurn];
+        document.getElementById('l-msg').innerText=lTurn<lHumans?"Tap Dice":"CPU Rolling..."; document.getElementById('dice').innerText="🎲"; lState='ROLL';
     }
+    function isSafe(c) { return ["7-2","9-3","13-7","14-9","9-14","7-13","3-9","2-7"].includes(c); }
+    function willKill(p,d) { if(p.step===-1)return false; let fp=paths[p.color][p.step+d]; if(isSafe(fp))return false; return lPawns.some(x=>x.color!==p.color && x.step!==-1 && paths[x.color][x.step]===fp); }
 </script>
 </body>
 </html>
